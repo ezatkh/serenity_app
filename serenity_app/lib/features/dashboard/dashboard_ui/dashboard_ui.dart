@@ -33,17 +33,24 @@ class _DashboardUIState extends State<DashboardUI> {
     final iconSize = 24.0 * scale;
 
     var appLocalization = Provider.of<LocalizationService>(context, listen: false);
+
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _tabs,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        switchInCurve: Curves.easeInOut,
+        switchOutCurve: Curves.easeInOut,
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+        child: _tabs[_currentIndex],
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: AppColors.white,
           boxShadow: [
             BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.05), // darker shadow, 20% opacity
+              color: Color.fromRGBO(0, 0, 0, 0.05),
               blurRadius: 20,
               spreadRadius: 0,
             ),
@@ -59,13 +66,14 @@ class _DashboardUIState extends State<DashboardUI> {
           showUnselectedLabels: false,
           type: BottomNavigationBarType.fixed,
           items: [
-            buildNavItem(icon: Icons.home, label: appLocalization.getLocalizedString("home"), index: 0, currentIndex: _currentIndex,iconSize: iconSize),
-            buildNavItem(icon: Icons.chat_bubble_outline, label: appLocalization.getLocalizedString("chat") , index: 1, currentIndex: _currentIndex,iconSize: iconSize),
-            buildNavItem(icon: Icons.person_outline, label:appLocalization.getLocalizedString("profile") , index: 2, currentIndex: _currentIndex,iconSize: iconSize),
-            buildNavItem(icon: Icons.settings, label:appLocalization.getLocalizedString("settings") , index: 3, currentIndex: _currentIndex,iconSize: iconSize),
+            buildNavItem(icon: Icons.home, label: appLocalization.getLocalizedString("home"), index: 0, currentIndex: _currentIndex, iconSize: iconSize),
+            buildNavItem(icon: Icons.chat_bubble_outline, label: appLocalization.getLocalizedString("chat"), index: 1, currentIndex: _currentIndex, iconSize: iconSize),
+            buildNavItem(icon: Icons.person_outline, label: appLocalization.getLocalizedString("profile"), index: 2, currentIndex: _currentIndex, iconSize: iconSize),
+            buildNavItem(icon: Icons.settings, label: appLocalization.getLocalizedString("settings"), index: 3, currentIndex: _currentIndex, iconSize: iconSize),
           ],
         ),
       ),
     );
   }
+
 }

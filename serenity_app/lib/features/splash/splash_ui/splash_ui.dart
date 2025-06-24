@@ -3,6 +3,7 @@ import 'package:serenity_app/core/constants/app_colors.dart';
 
 import '../../../core/navigation/page_transitions.dart';
 import '../../auth/login/login_ui/login_ui.dart';
+import '../../dashboard/tabs/chat/chat_ui/chat_ui.dart';
 import '../widgets/stripedCircle.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -45,22 +46,36 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     _screenOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _screenController, curve: Curves.easeIn),
     );
-
-    // Sequence: logo first, then screen
-    _logoController.forward().whenComplete(() {
-      _screenController.forward().whenComplete(() {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Future.delayed(const Duration(milliseconds: 1000), () {
-            Navigator.pushReplacement(
-              context,
-              FadePageRoute(page: const LoginUI()),
-            );
-        });
-
-      });
-      });
-    });
   }
+
+  bool _started = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Prevent it from running multiple times
+    if (!_started) {
+      _started = true;
+      _startSequence();
+    }
+  }
+
+  void _startSequence() async {
+    await precacheImage(const AssetImage('assets/icons/loginLogo.png'), context);
+    await precacheImage(const AssetImage('assets/images/bottomShape.png'), context);
+
+    await _logoController.forward();
+    await _screenController.forward();
+    await Future.delayed(const Duration(milliseconds: 1000));
+    await _screenController.reverse();
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      FadePageRoute(page: const LoginUI()),
+    );
+  }
+
 
   @override
   void dispose() {

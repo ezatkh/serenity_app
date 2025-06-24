@@ -131,7 +131,7 @@ class MyApp extends StatelessWidget {
       return GlobalErrorListener(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: localizeService.getLocalizedString("serenity"),
+          title: "Serenity",
           theme: theme,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
@@ -139,9 +139,8 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: const [
-            Locale('en', 'US'), // English
-            Locale('pt', 'PT'), // Portuguese
-            // Add more locales as needed
+            Locale('en', 'US'),
+            Locale('pt', 'PT'),
           ],
           locale: Locale(localizeService.selectedLanguageCode),
           home: SplashScreen(),

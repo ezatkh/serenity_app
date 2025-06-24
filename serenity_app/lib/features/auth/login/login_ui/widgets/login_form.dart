@@ -36,6 +36,7 @@ class _LoginFormState extends State<LoginForm> {
       children: [
         CustomTextField(
           label: "${appLocalization.getLocalizedString("nif")}",
+      //    label: "nif",
           controller: nifController,
           keyboardType: TextInputType.number,
           scale:scale
@@ -43,6 +44,7 @@ class _LoginFormState extends State<LoginForm> {
         SizedBox(height: gap15),
         CustomTextField(
           label: "${appLocalization.getLocalizedString("emailAndMobile")}",
+         // label: "emailAndMobile",
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           hint: 'example@email.com',
@@ -83,6 +85,7 @@ class _LoginFormState extends State<LoginForm> {
             Expanded(
               child: Text.rich(
                 TextSpan(
+              //    text:  "conditionsPart1",
                   text:  "${appLocalization.getLocalizedString("conditionsPart1")}",
                   style:  TextStyle(
                     fontSize: fontSize12,
@@ -92,6 +95,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   children: [
                     TextSpan(
+                //      text: "conditionsPart2",
                       text: "${appLocalization.getLocalizedString("conditionsPart2")}",
                       style: TextStyle(
                         color: AppColors.primaryBoldColor,
@@ -101,9 +105,11 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                     ),
                     TextSpan(
+                    //  text: "conditionsPart3",
                       text: "${appLocalization.getLocalizedString("conditionsPart3")}",
                     ),
                     TextSpan(
+                    //  text: "conditionsPart4",
                       text: "${appLocalization.getLocalizedString("conditionsPart4")}",
                       style: TextStyle(
                         color: AppColors.primaryBoldColor,
@@ -116,12 +122,12 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-
           ],
         ),
         SizedBox(height: gap20),
         CustomButton(
           text: '${appLocalization.getLocalizedString("continue")}',
+       //   text: 'continue',
           onPressed: () {
             Navigator.push(
               context,
