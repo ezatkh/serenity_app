@@ -1,36 +1,71 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OtpController {
   final String userId;
-  final String deliveryMethod;
   final VoidCallback onVerified;
 
   final ValueNotifier<int> timer = ValueNotifier(60);
+  final ValueNotifier<String?> error = ValueNotifier(null);
   Timer? _countdown;
+  String? _verificationId;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   OtpController({
     required this.userId,
-    required this.deliveryMethod,
     required this.onVerified,
   });
 
   void sendOtp() {
-    // TODO: Call your API or Firebase to send OTP here, depending on deliveryMethod
-    debugPrint('Sending OTP to $userId via $deliveryMethod');
+    error.value = null;
     _startTimer();
+
+    _auth.verifyPhoneNumber(
+      phoneNumber: "+970569222046",
+      timeout: const Duration(seconds: 60),
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        try {
+          await _auth.signInWithCredential(credential);
+          onVerified();
+        } catch (e) {
+          _setError('Auto sign-in failed: $e');
+        }
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        _setError(e.message);
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        _verificationId = verificationId;
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        _verificationId = verificationId;
+      },
+    );
   }
 
   void resendOtp() {
-    sendOtp();
+    if (timer.value == 0) {
+      sendOtp();
+    }
   }
 
-  void verifyOtp(String code) {
-    // TODO: Call your API or Firebase to verify OTP here
-    debugPrint('Verifying OTP $code for $userId');
-    Future.delayed(const Duration(seconds: 1), () {
+  Future<void> verifyOtp(String code) async {
+    error.value = null;
+    if (_verificationId == null) {
+      _setError('No verification ID available. Please request OTP again.');
+      return;
+    }
+    try {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: _verificationId!,
+        smsCode: code,
+      );
+      await _auth.signInWithCredential(credential);
       onVerified();
-    });
+    } on FirebaseAuthException catch (e) {
+      _setError(e.message);
+    }
   }
 
   void _startTimer() {
@@ -45,8 +80,14 @@ class OtpController {
     });
   }
 
+  void _setError(String? message) {
+    error.value = message;
+    debugPrint('OTP Error: $message');
+  }
+
   void dispose() {
     _countdown?.cancel();
     timer.dispose();
+    error.dispose();
   }
 }

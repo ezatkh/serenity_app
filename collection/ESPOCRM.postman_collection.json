@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "65e2e476-a7fc-4f9f-a8f4-87ef89442553",
+		"name": "ESPOCRM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5269253",
+		"_collection_link": "https://curamet.postman.co/workspace/Curamet~92fd76ce-cd8e-44d8-94ab-b4c925dc94ff/collection/5269253-65e2e476-a7fc-4f9f-a8f4-87ef89442553?action=share&source=collection_link&creator=5269253"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get account",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "search account by NIF",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "update account",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

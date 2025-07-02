@@ -4,6 +4,7 @@ import 'package:serenity_app/core/constants/app_colors.dart';
 
 import '../../../../../core/services/LocalizationService.dart';
 import '../../../../../widgets/custom_button.dart';
+import '../../../../dashboard/dashboard_ui/dashboard_ui.dart';
 import '../../../otp/otp_ui/otp_ui.dart';
 import '../../../otp/otp_viewmodel/otp_viewmodel.dart';
 import 'custom_text_field.dart';
@@ -135,9 +136,11 @@ class _LoginFormState extends State<LoginForm> {
                 builder: (_) => OtpUI(
                   controller: OtpController(
                     userId: "user@example.com",
-                    deliveryMethod: "email",
                     onVerified: () {
-                      // Navigate to the next screen
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => const DashboardUI()),
+                      );
                     },
                   ),
                 ),

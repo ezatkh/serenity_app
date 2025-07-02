@@ -6,7 +6,6 @@ import 'core/services/globalErrorService.dart';
 
 class GlobalErrorListener extends StatelessWidget {
   final Widget child;
-
   const GlobalErrorListener({Key? key, required this.child}) : super(key: key);
 
   @override

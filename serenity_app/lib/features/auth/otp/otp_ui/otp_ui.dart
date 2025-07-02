@@ -5,7 +5,6 @@ import 'package:serenity_app/core/constants/app_colors.dart';
 
 import '../../../../core/services/LocalizationService.dart';
 import '../../../../widgets/custom_button.dart';
-import '../../../dashboard/dashboard_ui/dashboard_ui.dart';
 import '../otp_viewmodel/otp_viewmodel.dart';
 
 class OtpUI extends StatefulWidget {
@@ -20,13 +19,19 @@ class OtpUI extends StatefulWidget {
 class _OtpUIState extends State<OtpUI> {
   final TextEditingController _pinController = TextEditingController();
   String _enteredPin = "";
+  bool _isLoading = false;
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
     widget.controller.sendOtp();
-    widget.controller.timer.addListener(() {
-      setState(() {});
+    widget.controller.timer.addListener(() => setState(() {}));
+    widget.controller.error.addListener(() {
+      setState(() {
+        _errorMessage = widget.controller.error.value;
+        _isLoading = false; // stop loading on error
+      });
     });
   }
 
@@ -38,11 +43,20 @@ class _OtpUIState extends State<OtpUI> {
   }
 
   void _resendCode() {
-    widget.controller.resendOtp();
+    if (widget.controller.timer.value == 0) {
+      widget.controller.resendOtp();
+      setState(() {
+        _errorMessage = null;
+      });
+    }
   }
 
-  void _verifyOtp() {
-    widget.controller.verifyOtp(_enteredPin);
+  void _verifyOtp() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+    await widget.controller.verifyOtp(_enteredPin);
   }
 
   @override
@@ -134,16 +148,24 @@ class _OtpUIState extends State<OtpUI> {
                     autofocus: true,
                     showCursor: true,
                   ),
+                  if (_errorMessage != null) ...[
+                    SizedBox(height: 12),
+                    Text(
+                      _errorMessage!,
+                      style: TextStyle(color: Colors.red, fontSize: fontSize * 0.85),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                   SizedBox(height: 100 * scale),
+                  if (_isLoading)
+                    CircularProgressIndicator()
+                  else
                   CustomButton(
                     text: appLocalization.getLocalizedString("continue"),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const DashboardUI()),
-                      );
-                    },
-                    isEnabled: _enteredPin.length == 6,
+                    onPressed: (_enteredPin.length == 6 && !_isLoading)
+                        ? _verifyOtp
+                        : () {},
+                    isEnabled: _enteredPin.length == 6 && !_isLoading,
                     fontSize: fontSize * 0.95,
                     textColor: AppColors.white,
                     borderRadius: 12,

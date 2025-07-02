@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
+// import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'core/constants/app_colors.dart';
@@ -23,9 +23,9 @@ Future<void> main() async {
   bool developerMode = false;
   try {
     // Check for jailbreak status
-    isJailbroken = await FlutterJailbreakDetection.jailbroken;
-    developerMode = await FlutterJailbreakDetection.developerMode;
-    print("developer mode :${developerMode} : isJailbroken :${isJailbroken}");
+    // isJailbroken = await FlutterJailbreakDetection.jailbroken;
+    // developerMode = await FlutterJailbreakDetection.developerMode;
+    // print("developer mode :${developerMode} : isJailbroken :${isJailbroken}");
   } on PlatformException {
     isJailbroken = true;
     developerMode = true;
