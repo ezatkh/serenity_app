@@ -24,5 +24,6 @@
   "subscriptions": "Subscriptions",
   "cases": "Cases",
   "medicalRecords": "Medical Records",
-  "documents": "Documents"
+  "documents": "Documents",
+  "pleaseAcceptTerms": "Please accept the terms and conditions to continue."
 }

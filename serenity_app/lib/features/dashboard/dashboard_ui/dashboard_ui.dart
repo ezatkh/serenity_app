@@ -7,7 +7,7 @@ import 'package:serenity_app/features/dashboard/tabs/chat/chat_ui/chat_ui.dart';
 import 'package:serenity_app/features/dashboard/tabs/profile/profile_ui/profile_ui.dart';
 import 'package:serenity_app/features/dashboard/tabs/settings/settings_ui/settings_ui.dart';
 
-import '../../../core/services/LocalizationService.dart';
+import '../../../core/services/local/LocalizationService.dart';
 
 class DashboardUI extends StatefulWidget {
   const DashboardUI({super.key});

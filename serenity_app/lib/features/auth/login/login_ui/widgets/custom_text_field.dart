@@ -7,7 +7,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final double scale;
   final String? hint;
-
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     super.key,
@@ -16,6 +16,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     required this.scale,
     this.hint,
+    this.validator,
   });
 
   @override
@@ -24,8 +25,6 @@ class CustomTextField extends StatelessWidget {
     final inputFontSize = (14.0 * scale).clamp(14.0, 16.0);
     final hintFontSize = (13.0 * scale).clamp(13.0, 15.0);
 
-    final verticalPadding = (14.0 * scale).clamp(10.0, 24.0);
-    final horizontalPadding = (12.0 * scale).clamp(8.0, 20.0);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,13 +37,14 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         SizedBox(height: 6.0 * scale),
-        TextField(
+        TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           style: TextStyle(
             color: AppColors.black,
             fontSize: inputFontSize,
           ),
+          validator: validator,
           decoration: InputDecoration(
             hintText: hint,
             hintStyle:  TextStyle(
@@ -65,6 +65,20 @@ class CustomTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(
                 color: AppColors.primaryBoldColor,
+                width: 1.5,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(
+                color: AppColors.errorColor,
+                width: 1.5,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(
+                color: AppColors.errorColor,
                 width: 1.5,
               ),
             ),

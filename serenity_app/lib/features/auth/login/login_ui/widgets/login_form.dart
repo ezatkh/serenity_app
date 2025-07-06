@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 
-import '../../../../../core/services/LocalizationService.dart';
+import '../../../../../core/services/local/LocalizationService.dart';
 import '../../../../../widgets/custom_button.dart';
 import '../../../../dashboard/dashboard_ui/dashboard_ui.dart';
 import '../../../otp/otp_ui/otp_ui.dart';
 import '../../../otp/otp_viewmodel/otp_viewmodel.dart';
+import '../../login_viewmodel/login_viewmodel.dart';
 import 'custom_text_field.dart';
 
 class LoginForm extends StatefulWidget {
@@ -17,9 +18,11 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController nifController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   bool isChecked = false;
+  bool showTermsError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,130 +33,151 @@ class _LoginFormState extends State<LoginForm> {
     final gap20 = 20.0 * scale;
     final checkboxScale = scale * 1.2;
     final fontSize12 = (12.0 * scale).clamp(12.0, 14.0);
-
+    final viewModel = Provider.of<LoginViewModel>(context);
     var appLocalization = Provider.of<LocalizationService>(context, listen: false);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomTextField(
-          label: "${appLocalization.getLocalizedString("nif")}",
-      //    label: "nif",
-          controller: nifController,
-          keyboardType: TextInputType.number,
-          scale:scale
-        ),
-        SizedBox(height: gap15),
-        CustomTextField(
-          label: "${appLocalization.getLocalizedString("emailAndMobile")}",
-         // label: "emailAndMobile",
-          controller: emailController,
-          keyboardType: TextInputType.emailAddress,
-          hint: 'example@email.com',
-          scale:scale
-        ),
-        SizedBox(height: gap15),
-        Row(
-          children: [
-            Transform.scale(
-              scale: checkboxScale,
-              child: Theme(
-                data: Theme.of(context).copyWith(
-                  unselectedWidgetColor: AppColors.grey,
-                  checkboxTheme: CheckboxThemeData(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    side: const BorderSide(
-                      color: AppColors.grey,
-                      width: 1.5,
-                    ),
-                    visualDensity: VisualDensity.compact,
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                ),
-                child: Checkbox(
-                  value: isChecked,
-                  onChanged: (value) {
-                    setState(() {
-                      isChecked = value ?? false;
-                    });
-                  },
-                  activeColor: AppColors.secondaryColor,
-                ),
-              ),
-            ),
-            SizedBox(height: gap15),
-            Expanded(
-              child: Text.rich(
-                TextSpan(
-              //    text:  "conditionsPart1",
-                  text:  "${appLocalization.getLocalizedString("conditionsPart1")}",
-                  style:  TextStyle(
-                    fontSize: fontSize12,
-                    letterSpacing: 0.12,
-                    color: AppColors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  children: [
-                    TextSpan(
-                //      text: "conditionsPart2",
-                      text: "${appLocalization.getLocalizedString("conditionsPart2")}",
-                      style: TextStyle(
-                        color: AppColors.primaryBoldColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize12,
-                        letterSpacing: 0.12,
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomTextField(
+            label: "${appLocalization.getLocalizedString("nif")}",
+        //    label: "nif",
+            controller: nifController,
+            keyboardType: TextInputType.number,
+            scale:scale,
+            validator: viewModel.validateNIF,
+          ),
+          SizedBox(height: gap15),
+          CustomTextField(
+            label: "${appLocalization.getLocalizedString("emailAndMobile")}",
+           // label: "emailAndMobile",
+            controller: emailController,
+            keyboardType: TextInputType.emailAddress,
+            hint: 'example@email.com',
+            scale:scale,
+            validator: viewModel.validateContact,
+          ),
+          SizedBox(height: gap15),
+          Row(
+            children: [
+              Transform.scale(
+                scale: checkboxScale,
+                child: Theme(
+                  data: Theme.of(context).copyWith(
+                    unselectedWidgetColor: AppColors.grey,
+                    checkboxTheme: CheckboxThemeData(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
                       ),
-                    ),
-                    TextSpan(
-                    //  text: "conditionsPart3",
-                      text: "${appLocalization.getLocalizedString("conditionsPart3")}",
-                    ),
-                    TextSpan(
-                    //  text: "conditionsPart4",
-                      text: "${appLocalization.getLocalizedString("conditionsPart4")}",
-                      style: TextStyle(
-                        color: AppColors.primaryBoldColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize12,
-                        letterSpacing: 0.12,
+                      side: const BorderSide(
+                        color: AppColors.grey,
+                        width: 1.5,
                       ),
+                      visualDensity: VisualDensity.compact,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: gap20),
-        CustomButton(
-          text: '${appLocalization.getLocalizedString("continue")}',
-       //   text: 'continue',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => OtpUI(
-                  controller: OtpController(
-                    userId: "user@example.com",
-                    onVerified: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => const DashboardUI()),
-                      );
+                  ),
+                  child: Checkbox(
+                    value: isChecked,
+                    onChanged: (value) {
+                      setState(() {
+                        isChecked = value ?? false;
+                        if (isChecked) showTermsError = false;
+                      });
                     },
+                    activeColor: AppColors.secondaryColor,
                   ),
                 ),
               ),
-            );
-          },
-          isEnabled: true,
-          fontSize: 15,
-          textColor: AppColors.white,
-          borderRadius: 12,
-          backgroundColor: AppColors.secondaryColor,
-        ),
-      ],
+              SizedBox(height: gap15),
+              Expanded(
+                child: Text.rich(
+                  TextSpan(
+                    text:  "${appLocalization.getLocalizedString("conditionsPart1")}",
+                    style:  TextStyle(
+                      fontSize: fontSize12,
+                      letterSpacing: 0.12,
+                      color: AppColors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "${appLocalization.getLocalizedString("conditionsPart2")}",
+                        style: TextStyle(
+                          color: AppColors.primaryBoldColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontSize12,
+                          letterSpacing: 0.12,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "${appLocalization.getLocalizedString("conditionsPart3")}",
+                      ),
+                      TextSpan(
+                        text: "${appLocalization.getLocalizedString("conditionsPart4")}",
+                        style: TextStyle(
+                          color: AppColors.primaryBoldColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontSize12,
+                          letterSpacing: 0.12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (showTermsError)
+            Padding(
+              padding: EdgeInsets.only(left: 48, top: 4), // align with checkbox start
+              child: Text(
+                appLocalization.getLocalizedString("pleaseAcceptTerms"),
+                style: const TextStyle(color: AppColors.errorColor, fontSize: 12),
+              ),
+            ),
+          SizedBox(height: gap20),
+          CustomButton(
+            text: '${appLocalization.getLocalizedString("continue")}',
+            onPressed: () {
+              final isFormValid = _formKey.currentState!.validate();
+              if (!isChecked) {
+                setState(() {
+                  showTermsError = true;
+                });
+              } else {
+                setState(() {
+                  showTermsError = false;
+                });
+              }
+              if (!isFormValid || !isChecked) return;
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => OtpUI(
+                    controller: OtpController(
+                      userId: emailController.text,
+                      onVerified: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => const DashboardUI()),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              );
+            },
+            isEnabled: true,
+            fontSize: 15,
+            textColor: AppColors.white,
+            borderRadius: 12,
+            backgroundColor: AppColors.secondaryColor,
+          ),
+        ],
+      ),
     );
   }
 }

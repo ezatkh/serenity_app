@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 import 'package:serenity_app/features/auth/login/login_ui/widgets/login_form.dart';
 
-import '../../../../core/services/LocalizationService.dart';
+import '../../../../core/services/local/LocalizationService.dart';
 
 class LoginUI extends StatelessWidget {
   const LoginUI({super.key});

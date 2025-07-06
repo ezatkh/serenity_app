@@ -4,9 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'core/constants/app_colors.dart';
+import 'features/auth/login/login_viewmodel/login_viewmodel.dart';
 import 'features/splash/splash_ui/splash_ui.dart';
-import 'core/services/LocalizationService.dart';
-import 'core/services/firebase_api.dart';
+import 'core/services/local/LocalizationService.dart';
+import 'core/services/local/firebase_api.dart';
 import 'globalErrorListener.dart';
 import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
@@ -55,6 +56,7 @@ Future<void> main() async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => LocalizationService()),
+          ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ],
         child: const MyApp(isJailbroken: false),
       ),
@@ -119,7 +121,7 @@ class MyApp extends StatelessWidget {
           body: Center(
             child: Text(
               'This application cannot be run on jailbroken devices.',
-              style: TextStyle(color: Colors.red, fontSize: 18),
+              style: TextStyle(color: AppColors.errorColor, fontSize: 18),
               textAlign: TextAlign.center,
             ),
           ),

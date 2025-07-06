@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 import 'package:serenity_app/features/dashboard/tabs/home/home_ui/widgets/program_card.dart';
 
-import '../../../../../../core/services/LocalizationService.dart';
+import '../../../../../../core/services/local/LocalizationService.dart';
 import 'coming_appointment_card.dart';
 import 'dashboard_tile.dart';
 

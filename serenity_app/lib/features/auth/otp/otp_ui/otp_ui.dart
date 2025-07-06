@@ -3,7 +3,7 @@ import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 
-import '../../../../core/services/LocalizationService.dart';
+import '../../../../core/services/local/LocalizationService.dart';
 import '../../../../widgets/custom_button.dart';
 import '../otp_viewmodel/otp_viewmodel.dart';
 
