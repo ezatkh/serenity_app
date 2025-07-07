@@ -9,7 +9,7 @@ class AuthApiService {
     required BuildContext context,
   }) {
     return ApiRequest.get(
-      '${ApiConstants.searchByNif}$nif',
+      '${ApiConstants.get_searchByNif}$nif',
       context: context,
     );
   }

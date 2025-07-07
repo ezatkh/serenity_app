@@ -62,6 +62,39 @@ class ApiRequest {
     }
   }
 
+  static Future<Map<String, dynamic>> patch(
+      String endpoint,
+      Map<String, dynamic> body, {
+        Map<String, String>? headers,
+        required BuildContext context,
+      }) async {
+    try {
+      final defaultHeaders = {
+        "Content-Type": "application/json",
+        "X-Api-Key": API_KEY
+      };
+      final mergedHeaders = headers ?? defaultHeaders;
+
+      final response = await http
+          .patch(
+        Uri.parse(endpoint),
+        body: json.encode(body),
+        headers: mergedHeaders,
+      ).timeout(timeoutDuration, onTimeout: _onTimeout);
+
+      return await _handleResponse(
+        response,
+        context,
+            () => patch(endpoint, body, context: context, headers: headers),
+      );
+    } on TimeoutException {
+      return _handleTimeout();
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+
   static Future<Map<String, dynamic>> _handleResponse(
       http.Response response,
       BuildContext context,
