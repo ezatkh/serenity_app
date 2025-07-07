@@ -35,5 +35,6 @@ class AppColors {
   // White cards for clean UI
 
   static const Color errorColor = Color(0xFFD32F2F);
-// Standard red error color, complements secondary well
+  static const Color successColor = Color(0xFF388E3C);
+  static Color infoColor = Colors.orange.shade600;
 }

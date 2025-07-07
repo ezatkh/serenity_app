@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../constants/api_endpoints.dart';
 import 'base/api_service.dart';
 
 class AuthApiService {
@@ -8,19 +9,7 @@ class AuthApiService {
     required BuildContext context,
   }) {
     return ApiRequest.get(
-      'https://yourapi.com/auth/check-nif/$nif',
-      context: context,
-    );
-  }
-
-  static Future<Map<String, dynamic>> login({
-    required String email,
-    required String password,
-    required BuildContext context,
-  }) {
-    return ApiRequest.post(
-      'https://yourapi.com/auth/login',
-      {'email': email, 'password': password},
+      '${ApiConstants.searchByNif}$nif',
       context: context,
     );
   }

@@ -10,40 +10,238 @@
 		{
 			"name": "New Request",
 			"request": {
-				"method": "GET",
-				"header": []
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "a47b891d45870305fcba22d493f3b125",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"POST Name\",\n    \"gender\": \"Male\",\n    \"emailAddress\": \"alaa.banifadel11@gmail.com\",\n    \"phoneNumber\" : \"0709685213\",\n    \"billingAddressStreet\" : \"Address line 1\",\n    \"billingAddressCity\" : \"City\",\n    \"billingAddressPostalCode\" : \"Zip Code\",\n    \"billingAddressCountry\" : \"Country / Region\",\n    \"billingAddressState\" : \"State\",\n    \"programType\" : [\"Plan12\"],\n    \"apartmentNumber\": \"Apartment, suite, etc. (optional)\",\n    \"nonMemberProduct\": \"yes\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "get account",
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "search account by NIF",
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account?where[0][type]=equals&where[0][attribute]=nIF&where[0][value]=125171849",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account"
+					],
+					"query": [
+						{
+							"key": "where[0][type]",
+							"value": "equals"
+						},
+						{
+							"key": "where[0][attribute]",
+							"value": "nIF"
+						},
+						{
+							"key": "where[0][value]",
+							"value": "125171849"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "New Request",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Task/664ccbcfa872aa9ca",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Task",
+						"664ccbcfa872aa9ca"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "update account",
 			"request": {
-				"method": "GET",
-				"header": []
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"description\",\n    \"dateofbirth\": \"1991-05-15\",\n    \"billingAddressStreet\": \"my new address street\",\n    \"apartmentNumber\": \"A12\",\n    \"billingAddressCity\" : \"Lisbon\",\n    \"billingAddressPostalCode\" : \"15-153\",\n    \"doorNumber\" : \"4\",\n    \"gender\" : \"Male\",\n    \"phoneNumber\" :  \"709685213\",\n    \"emailAddress\" : \"sertowhiz@gmail.com\",\n    \"countryOfOrigin\" : \"Portugal\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d",
+					"protocol": "http",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d"
+					]
+				}
 			},
 			"response": []
 		}

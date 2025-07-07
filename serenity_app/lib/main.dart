@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'core/constants/app_colors.dart';
 import 'features/auth/login/login_viewmodel/login_viewmodel.dart';
@@ -130,28 +131,30 @@ class MyApp extends StatelessWidget {
     }
 
     return Consumer<LocalizationService>(builder: (context, localizeService, _) {
-      return GlobalErrorListener(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: "Serenity",
-          theme: theme,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en', 'US'),
-            Locale('pt', 'PT'),
-          ],
-          locale: Locale(localizeService.selectedLanguageCode),
-          home: SplashScreen(),
-          builder: (context, child) {
-            return Directionality(
-              textDirection:  TextDirection.ltr,
-              child: child!,
-            );
-          },
+      return OKToast(
+        child: GlobalErrorListener(
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: "Serenity",
+            theme: theme,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en', 'US'),
+              Locale('pt', 'PT'),
+            ],
+            locale: Locale(localizeService.selectedLanguageCode),
+            home: SplashScreen(),
+            builder: (context, child) {
+              return Directionality(
+                textDirection:  TextDirection.ltr,
+                child: child!,
+              );
+            },
+          ),
         ),
       );
     });

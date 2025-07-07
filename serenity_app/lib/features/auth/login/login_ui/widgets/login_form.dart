@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 
+import '../../../../../core/constants/constants.dart';
+import '../../../../../core/services/cache/sharedPreferences.dart';
 import '../../../../../core/services/local/LocalizationService.dart';
 import '../../../../../widgets/custom_button.dart';
 import '../../../../dashboard/dashboard_ui/dashboard_ui.dart';
@@ -140,7 +142,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: gap20),
           CustomButton(
             text: '${appLocalization.getLocalizedString("continue")}',
-            onPressed: () {
+            onPressed: () async {
               final isFormValid = _formKey.currentState!.validate();
               if (!isChecked) {
                 setState(() {
@@ -153,22 +155,36 @@ class _LoginFormState extends State<LoginForm> {
               }
               if (!isFormValid || !isChecked) return;
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => OtpUI(
-                    controller: OtpController(
-                      userId: emailController.text,
-                      onVerified: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => const DashboardUI()),
-                        );
-                      },
+              final response = await viewModel.handleNifCheck(
+                nif: nifController.text.trim(), // or whatever your NIF input controller is
+                context: context,
+              );
+
+              final status = response['status'];
+              final data = response['data'];
+              final success = response['success'];
+              if (status == 200 && success && data["total"]>0) {
+                  final List<dynamic> accountInfo = data['list'];
+                  final String userId = accountInfo[0]['id'];
+                  await SharedPrefsUtil.saveString(USER_ID, userId);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => OtpUI(
+                      controller: OtpController(
+                        emailOrPhone: emailController.text,
+                        onVerified: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => const DashboardUI()),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              }
+
             },
             isEnabled: true,
             fontSize: 15,

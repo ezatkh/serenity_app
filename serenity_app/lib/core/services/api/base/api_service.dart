@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../../constants/constants.dart';
 
 class ApiRequest {
   static const Duration timeoutDuration = Duration(seconds: 10);
@@ -14,20 +13,15 @@ class ApiRequest {
         required BuildContext context,
       }) async {
     try {
-      // final prefs = await SharedPreferences.getInstance();
-      // final token = prefs.getString('token') ?? '';
       final response = await http
           .get(
         Uri.parse(endpoint),
         headers: {
           "Content-Type": "application/json",
-          // "Authorization": "Bearer $token",
-          // "Idempotency-Key": IdempotencyHelper.generateKey(),
+          "X-Api-Key": API_KEY
         },
       )
           .timeout(timeoutDuration, onTimeout: _onTimeout);
-      print("the response is :${response.body}");
-
       return await _handleResponse(
         response,
         context,
@@ -47,14 +41,10 @@ class ApiRequest {
         required BuildContext context,
       }) async {
     try {
-      // final prefs = await SharedPreferences.getInstance();
-      // final token = prefs.getString('token') ?? '';
-
       final defaultHeaders = {
         "Content-Type": "application/json",
-        // "Authorization": "Bearer $token",
+        "API_KEY": API_KEY
       };
-
       final mergedHeaders = headers ?? defaultHeaders;
 
       final response = await http
@@ -89,31 +79,16 @@ class ApiRequest {
         };
 
       case 401:
-        // final loginState = Provider.of<LoginState>(context, listen: false);
-        // final success = await loginState.autoLogin(context);
-
-        // if (success["success"]) {
-        //   print("success :${success}");
-        //   debugPrint("Auto login successful. Retrying original request...");
-        //   // After successful login, retry the original request
-        //   final retryResponse = await apiRequest();
-        //   print("retryCallback finished");
-        //
-        //   // Return the result of the retry request directly
-        //   return retryResponse; // Ensure to return the retry result
-        // } else {
-          // If auto-login fails, return 401 error response
           return {
             'success': false,
-            'error': 'Unauthorized - auto-login failed.',
+            'error': 'Request error ${response.body}',
             'status': 401,
           };
-        // }
 
       case 404:
         return {
           'success': false,
-          'error': 'Request error',
+          'error': 'Request error ${response.body}',
           'status': 404,
         };
 

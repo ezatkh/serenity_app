@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OtpController {
-  final String userId;
+  final String emailOrPhone;
   final VoidCallback onVerified;
 
   final ValueNotifier<int> timer = ValueNotifier(60);
@@ -13,7 +13,7 @@ class OtpController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   OtpController({
-    required this.userId,
+    required this.emailOrPhone,
     required this.onVerified,
   });
 
@@ -22,7 +22,7 @@ class OtpController {
     _startTimer();
 
     _auth.verifyPhoneNumber(
-      phoneNumber: "+970569222046",
+      phoneNumber: emailOrPhone,
       timeout: const Duration(seconds: 60),
       verificationCompleted: (PhoneAuthCredential credential) async {
         try {
