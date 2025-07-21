@@ -8,6 +8,9 @@ class CustomTextField extends StatelessWidget {
   final double scale;
   final String? hint;
   final String? Function(String?)? validator;
+  final Color? labelColor;
+  final bool enabled;
+
 
   const CustomTextField({
     super.key,
@@ -17,6 +20,8 @@ class CustomTextField extends StatelessWidget {
     required this.scale,
     this.hint,
     this.validator,
+    this.labelColor,
+    this.enabled = true,
   });
 
   @override
@@ -32,16 +37,18 @@ class CustomTextField extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: labelFontSize,
-            color: AppColors.black,
+            color: labelColor ?? Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
         SizedBox(height: 6.0 * scale),
         TextFormField(
+          enabled: enabled,
           controller: controller,
           keyboardType: keyboardType,
           style: TextStyle(
-            color: AppColors.black,
+            fontWeight: FontWeight.w400,
+            color: enabled ? AppColors.black : AppColors.grey,
             fontSize: inputFontSize,
           ),
           validator: validator,
@@ -58,7 +65,7 @@ class CustomTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(
                 color: AppColors.grey,
-                width: 1.5,
+                width: 1,
               ),
             ),
             focusedBorder: OutlineInputBorder(
@@ -80,6 +87,13 @@ class CustomTextField extends StatelessWidget {
               borderSide: const BorderSide(
                 color: AppColors.errorColor,
                 width: 1.5,
+              ),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(
+                color: AppColors.grey,
+                width: 1,
               ),
             ),
           ),

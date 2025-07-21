@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace "com.example.serenity_app"
-
+//    namespace 'com.sherlouk.flutter_jailbreak_detection'
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 

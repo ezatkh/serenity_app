@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
+import 'package:serenity_app/states/user_state.dart';
 import 'core/constants/app_colors.dart';
 import 'features/auth/login/login_viewmodel/login_viewmodel.dart';
 import 'features/splash/splash_ui/splash_ui.dart';
@@ -57,7 +58,7 @@ Future<void> main() async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => LocalizationService()),
-          ChangeNotifierProvider(create: (_) => LoginViewModel()),
+          // ChangeNotifierProvider(create: (_) => UserState()),
         ],
         child: const MyApp(isJailbroken: false),
       ),

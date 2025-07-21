@@ -11,18 +11,50 @@ class OtpController {
   Timer? _countdown;
   String? _verificationId;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  late final String normalizedPhone;
 
   OtpController({
     required this.emailOrPhone,
     required this.onVerified,
-  });
+  }) {
+    try {
+      normalizedPhone = normalizeContact(emailOrPhone);
+    } catch (e) {
+      error.value = 'Invalid phone number';
+    }
+  }
+
+  bool _isValidPhoneNumber(String input) {
+    final phoneRegex = RegExp(r'^\+\d{7,15}$');
+    return phoneRegex.hasMatch(input.trim());
+  }
+
+  static String  normalizeContact(String input) {
+    final trimmed = input.trim();
+
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    final isPortuguesePhone = RegExp(r'^\d{9}$');
+    final isInternationalPhone = RegExp(r'^\+\d{7,15}$');
+
+    if (emailRegex.hasMatch(trimmed)) return trimmed;
+    if (isPortuguesePhone.hasMatch(trimmed)) return '+351$trimmed';
+    if (isInternationalPhone.hasMatch(trimmed)) return trimmed;
+
+    return trimmed;
+  }
 
   void sendOtp() {
     error.value = null;
+
+    if (!_isValidPhoneNumber(emailOrPhone)) {
+      _setError('Invalid phone number. Please include country code (e.g. +351)');
+      return;
+    }
+
     _startTimer();
 
     _auth.verifyPhoneNumber(
-      phoneNumber: emailOrPhone,
+      phoneNumber: normalizedPhone,
       timeout: const Duration(seconds: 60),
       verificationCompleted: (PhoneAuthCredential credential) async {
         try {

@@ -19,7 +19,7 @@ class DashboardUI extends StatefulWidget {
 class _DashboardUIState extends State<DashboardUI> {
   int _currentIndex = 0;
 
-  final List<Widget> _tabs = const [
+  final List<Widget> _tabs =  [
     HomeUI(),
     ChatUI(),
     ProfileUI(),

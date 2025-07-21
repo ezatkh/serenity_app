@@ -24,6 +24,8 @@ class AppColors {
 
   static const Color hintTextColor = Color(0x9900AEC7);
   // Primary with ~60% opacity for subtle hints
+  static const Color greyLabelText = Color(0xFF979797);
+
 
   static const Color iconColor = Color(0xFFB33E9D);
   // A lighter/muted secondary color for icons to blend nicely

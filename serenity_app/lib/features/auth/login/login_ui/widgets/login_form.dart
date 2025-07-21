@@ -10,7 +10,7 @@ import '../../../../dashboard/dashboard_ui/dashboard_ui.dart';
 import '../../../otp/otp_ui/otp_ui.dart';
 import '../../../otp/otp_viewmodel/otp_viewmodel.dart';
 import '../../login_viewmodel/login_viewmodel.dart';
-import 'custom_text_field.dart';
+import '../../../../../widgets/custom_text_field.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
     final gap20 = 20.0 * scale;
     final checkboxScale = scale * 1.2;
     final fontSize12 = (12.0 * scale).clamp(12.0, 14.0);
-    final viewModel = Provider.of<LoginViewModel>(context);
+    final loginHelper = LoginViewModel();
     var appLocalization = Provider.of<LocalizationService>(context, listen: false);
     return Form(
       key: _formKey,
@@ -44,21 +44,19 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           CustomTextField(
             label: "${appLocalization.getLocalizedString("nif")}",
-        //    label: "nif",
             controller: nifController,
             keyboardType: TextInputType.number,
             scale:scale,
-            validator: viewModel.validateNIF,
+            validator: loginHelper.validateNIF,
           ),
           SizedBox(height: gap15),
           CustomTextField(
             label: "${appLocalization.getLocalizedString("emailAndMobile")}",
-           // label: "emailAndMobile",
             controller: emailController,
             keyboardType: TextInputType.emailAddress,
             hint: 'example@email.com',
             scale:scale,
-            validator: viewModel.validateContact,
+            validator: loginHelper.validateContact,
           ),
           SizedBox(height: gap15),
           Row(
@@ -155,7 +153,7 @@ class _LoginFormState extends State<LoginForm> {
               }
               if (!isFormValid || !isChecked) return;
 
-              final response = await viewModel.handleNifCheck(
+              final response = await loginHelper.handleNifCheck(
                 nif: nifController.text.trim(), // or whatever your NIF input controller is
                 context: context,
               );
@@ -167,6 +165,11 @@ class _LoginFormState extends State<LoginForm> {
                   final List<dynamic> accountInfo = data['list'];
                   final String userId = accountInfo[0]['id'];
                   await SharedPrefsUtil.saveString(USER_ID, userId);
+                          // Navigator.pushAndRemoveUntil(
+                          //   context,
+                          //   MaterialPageRoute(builder: (_) => const DashboardUI()),
+                          //       (route) => false,
+                          // );
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -174,9 +177,10 @@ class _LoginFormState extends State<LoginForm> {
                       controller: OtpController(
                         emailOrPhone: emailController.text,
                         onVerified: () {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(builder: (_) => const DashboardUI()),
+                                (route) => false,
                           );
                         },
                       ),
