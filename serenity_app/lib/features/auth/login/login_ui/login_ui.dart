@@ -4,9 +4,17 @@ import 'package:serenity_app/core/constants/app_colors.dart';
 import 'package:serenity_app/features/auth/login/login_ui/widgets/login_form.dart';
 
 import '../../../../core/services/local/LocalizationService.dart';
+import '../../../../widgets/loading_avatar/avatar_screen.dart';
 
-class LoginUI extends StatelessWidget {
+class LoginUI extends StatefulWidget {
   const LoginUI({super.key});
+
+  @override
+  State<LoginUI> createState() => _LoginUIState();
+}
+
+class _LoginUIState extends State<LoginUI> {
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +80,23 @@ class LoginUI extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: gap),
-                    const LoginForm(),
+                    LoginForm(
+                      onLoadingChanged: setLoading,
+                    ),
                   ],
                 ),
               ),
             ),
           ),
+          if (_isLoading) const LoadingAvatar(),
         ],
       ),
     );
+  }
+
+  void setLoading(bool value) {
+    setState(() {
+      _isLoading = value;
+    });
   }
 }

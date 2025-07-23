@@ -13,7 +13,10 @@ import '../../login_viewmodel/login_viewmodel.dart';
 import '../../../../../widgets/custom_text_field.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+
+  final void Function(bool isLoading)? onLoadingChanged;
+
+  const LoginForm({super.key, this.onLoadingChanged});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -140,56 +143,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: gap20),
           CustomButton(
             text: '${appLocalization.getLocalizedString("continue")}',
-            onPressed: () async {
-              final isFormValid = _formKey.currentState!.validate();
-              if (!isChecked) {
-                setState(() {
-                  showTermsError = true;
-                });
-              } else {
-                setState(() {
-                  showTermsError = false;
-                });
-              }
-              if (!isFormValid || !isChecked) return;
-
-              final response = await loginHelper.handleNifCheck(
-                nif: nifController.text.trim(), // or whatever your NIF input controller is
-                context: context,
-              );
-
-              final status = response['status'];
-              final data = response['data'];
-              final success = response['success'];
-              if (status == 200 && success && data["total"]>0) {
-                  final List<dynamic> accountInfo = data['list'];
-                  final String userId = accountInfo[0]['id'];
-                  await SharedPrefsUtil.saveString(USER_ID, userId);
-                          // Navigator.pushAndRemoveUntil(
-                          //   context,
-                          //   MaterialPageRoute(builder: (_) => const DashboardUI()),
-                          //       (route) => false,
-                          // );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => OtpUI(
-                      controller: OtpController(
-                        emailOrPhone: emailController.text,
-                        onVerified: () {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (_) => const DashboardUI()),
-                                (route) => false,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              }
-
-            },
+            onPressed: _handleSubmit,
             isEnabled: true,
             fontSize: 15,
             textColor: AppColors.white,
@@ -199,5 +153,65 @@ class _LoginFormState extends State<LoginForm> {
         ],
       ),
     );
+  }
+
+  Future<void> _handleSubmit() async {
+    final isFormValid = _formKey.currentState!.validate();
+
+    if (!isChecked) {
+      setState(() {
+        showTermsError = true;
+      });
+    } else {
+      setState(() {
+        showTermsError = false;
+      });
+    }
+
+    if (!isFormValid || !isChecked) return;
+
+    widget.onLoadingChanged?.call(true);
+
+    try {
+      final loginHelper = LoginViewModel();
+
+      final response = await loginHelper.handleNifCheck(
+        nif: nifController.text.trim(),
+        context: context,
+      );
+
+      final status = response['status'];
+      final data = response['data'];
+      final success = response['success'];
+
+      if (status == 200 && success && data["total"] > 0) {
+        final List<dynamic> accountInfo = data['list'];
+        final String userId = accountInfo[0]['id'];
+        await SharedPrefsUtil.saveString(USER_ID, userId);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => OtpUI(
+              controller: OtpController(
+                emailOrPhone: emailController.text,
+                onVerified: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const DashboardUI()),
+                        (route) => false,
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      // You can handle error here if needed
+    } finally {
+      // 🔘 Stop loading
+      widget.onLoadingChanged?.call(false);
+    }
   }
 }

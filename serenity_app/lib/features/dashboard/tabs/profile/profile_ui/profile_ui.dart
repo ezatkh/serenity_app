@@ -5,7 +5,9 @@ import 'package:serenity_app/features/dashboard/tabs/profile/profile_ui/widgets/
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/services/local/LocalizationService.dart';
 import '../../../../../data/Models/account_profile.dart';
+import '../../../../../widgets/custom_status_bar.dart';
 import '../../../../../widgets/custom_text_field.dart';
+import '../../../../../widgets/loading_avatar/loading_dialog.dart';
 import '../profile_viewmodel/profile_viewmodel.dart';
 
 class ProfileUI extends StatefulWidget {
@@ -22,7 +24,6 @@ class _ProfileUIState extends State<ProfileUI> {
 
   AccountProfile? _profile;
   bool isEditing = false;
-  bool isLoading = false;
   String? selectedGender;
   String? selectedClientManager;
   String? selectedCaseManager;
@@ -49,12 +50,19 @@ class _ProfileUIState extends State<ProfileUI> {
     super.initState();
     selectedGender = "Male";
     selectedClientManager = "Manager1";
-    fetchAndFillProfile();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchAndFillProfile();
+    });
   }
 
   void fetchAndFillProfile() async {
+    LoadingDialog.show(context);
+
     final data = await profileViewModel.fetchProfile(context);
-    if (data == null) return;
+
+    LoadingDialog.hide(context);
+
+    if (data == null || !mounted) return;
 
     setState(() {
       _profile = data;
@@ -94,297 +102,297 @@ class _ProfileUIState extends State<ProfileUI> {
     final scale = (size.shortestSide / 375).clamp(1.0, 1.3);
     var appLocalization = Provider.of<LocalizationService>(context, listen: false);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        title: Text(
-          appLocalization.getLocalizedString("profile"),
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20 * scale,
-            fontWeight: FontWeight.w500
+    return CustomStatusBar(
+      color: Colors.white,
+      iconBrightness: Brightness.dark,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.white,
+          title: Text(
+            appLocalization.getLocalizedString("profile"),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20 * scale,
+              fontWeight: FontWeight.w500
+            ),
           ),
+          centerTitle: true,
+          elevation: 0,
         ),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        const CircleAvatar(
-                          radius: 60,
-                          backgroundImage: AssetImage('assets/images/person.png'),
-                        ),
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: AppColors.secondaryColor,
-                          child: Image.asset(
-                            'assets/icons/edit.png',
-                            width: 14,
-                            height: 14,
-                            color: AppColors.white,
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 600),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          const CircleAvatar(
+                            radius: 60,
+                            backgroundImage: AssetImage('assets/images/person.png'),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("nif"),
-                        controller: nifController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("name"),
-                        controller: nameController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("email"),
-                        controller: emailController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomDateField(
-                        label: appLocalization.getLocalizedString("dateOfBirth"),
-                        controller: dobController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomDateField(
-                        label: appLocalization.getLocalizedString("joinDate"),
-                        controller: joinDateController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("addressStreet"),
-                        controller: addressStreetController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("addressCity"),
-                        controller: addressCityController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("addressPostal"),
-                        controller: addressPostalCodeController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("doorNumber"),
-                        controller: doorNumberController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("apartment"),
-                        controller: apartmentNumberController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("countryOfOrigin"),
-                        controller: countryController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomDropdownField(
-                        label: appLocalization.getLocalizedString("gender"),
-                        selectedValue: selectedGender,
-                        items: genderOptions,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                        onChanged: (val) {
-                          setState(() {
-                            selectedGender = val;
-                          });
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomDropdownField(
-                        label: appLocalization.getLocalizedString("caseManager"),
-                        selectedValue: selectedCaseManager,
-                        items: caseManagerOptions,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                        onChanged: (val) {
-                          setState(() {
-                            selectedCaseManager = val;
-                          });
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomDropdownField(
-                        label: appLocalization.getLocalizedString("clientManager"),
-                        selectedValue: selectedClientManager,
-                        items: clientManagerOptions,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                        onChanged: (val) {
-                          setState(() {
-                            selectedClientManager = val;
-                          });
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("status"),
-                        controller: statusController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("emergencyContactName"),
-                        controller: emergencyConstantNameController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: CustomTextField(
-                        label: appLocalization.getLocalizedString("emergencyContactPhone"),
-                        controller: emergencyConstantPhoneController,
-                        scale: scale,
-                        labelColor: AppColors.greyLabelText,
-                        enabled: isEditing,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
+                          CircleAvatar(
+                            radius: 16,
                             backgroundColor: AppColors.secondaryColor,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            padding: EdgeInsets.symmetric(vertical: 14 * scale),
+                            child: Image.asset(
+                              'assets/icons/edit.png',
+                              width: 14,
+                              height: 14,
+                              color: AppColors.white,
+                            ),
                           ),
-                          onPressed: () async {
-                            if (isEditing) {
-                              setState(() {
-                                isLoading =true;
-                              });
-                              await profileViewModel.updateProfile(context,
-                                nameController: nameController,
-                                emailController: emailController,
-                                dobController: dobController,
-                                addressStreetController: addressStreetController,
-                                addressCityController: addressCityController,
-                                addressPostalCodeController: addressPostalCodeController,
-                                doorNumberController: doorNumberController,
-                                apartmentNumberController: apartmentNumberController,
-                                countryController: countryController,
-                                emergencyConstantNameController: emergencyConstantNameController,
-                                emergencyConstantPhoneController: emergencyConstantPhoneController,
-                              );
-                              setState(() {
-                                isLoading =false;
-                              });
-                            }
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("nif"),
+                          controller: nifController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("name"),
+                          controller: nameController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("email"),
+                          controller: emailController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomDateField(
+                          label: appLocalization.getLocalizedString("dateOfBirth"),
+                          controller: dobController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomDateField(
+                          label: appLocalization.getLocalizedString("joinDate"),
+                          controller: joinDateController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("addressStreet"),
+                          controller: addressStreetController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("addressCity"),
+                          controller: addressCityController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("addressPostal"),
+                          controller: addressPostalCodeController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("doorNumber"),
+                          controller: doorNumberController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("apartment"),
+                          controller: apartmentNumberController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("countryOfOrigin"),
+                          controller: countryController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomDropdownField(
+                          label: appLocalization.getLocalizedString("gender"),
+                          selectedValue: selectedGender,
+                          items: genderOptions,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                          onChanged: (val) {
                             setState(() {
-                              isEditing = profileViewModel.toggleEditMode(isEditing);
+                              selectedGender = val;
                             });
                           },
-                          child: Text(
-                            isEditing ? appLocalization.getLocalizedString("save") :appLocalization.getLocalizedString("update"),
-                            style: TextStyle(color: AppColors.white, fontSize: 15 * scale),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomDropdownField(
+                          label: appLocalization.getLocalizedString("caseManager"),
+                          selectedValue: selectedCaseManager,
+                          items: caseManagerOptions,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                          onChanged: (val) {
+                            setState(() {
+                              selectedCaseManager = val;
+                            });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomDropdownField(
+                          label: appLocalization.getLocalizedString("clientManager"),
+                          selectedValue: selectedClientManager,
+                          items: clientManagerOptions,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                          onChanged: (val) {
+                            setState(() {
+                              selectedClientManager = val;
+                            });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("status"),
+                          controller: statusController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("emergencyContactName"),
+                          controller: emergencyConstantNameController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: CustomTextField(
+                          label: appLocalization.getLocalizedString("emergencyContactPhone"),
+                          controller: emergencyConstantPhoneController,
+                          scale: scale,
+                          labelColor: AppColors.greyLabelText,
+                          enabled: isEditing,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.secondaryColor,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              padding: EdgeInsets.symmetric(vertical: 14 * scale),
+                            ),
+                            onPressed: _handleProfileEditOrUpdate,
+                            child: Text(
+                              isEditing ? appLocalization.getLocalizedString("save") :appLocalization.getLocalizedString("update"),
+                              style: TextStyle(color: AppColors.white, fontSize: 15 * scale),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          if (isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.5), // semi-transparent overlay
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
+
+  Future<void> _handleProfileEditOrUpdate() async {
+    if (isEditing) {
+      LoadingDialog.show(context); // Show loading
+
+      await profileViewModel.updateProfile(
+        context,
+        nameController: nameController,
+        emailController: emailController,
+        dobController: dobController,
+        addressStreetController: addressStreetController,
+        addressCityController: addressCityController,
+        addressPostalCodeController: addressPostalCodeController,
+        doorNumberController: doorNumberController,
+        apartmentNumberController: apartmentNumberController,
+        countryController: countryController,
+        emergencyConstantNameController: emergencyConstantNameController,
+        emergencyConstantPhoneController: emergencyConstantPhoneController,
+        statusController: statusController,
+      );
+
+      LoadingDialog.hide(context); // Hide loading
+    }
+
+    setState(() {
+      isEditing = profileViewModel.toggleEditMode(isEditing);
+    });
+  }
+
 }

@@ -58,7 +58,6 @@ Future<void> main() async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => LocalizationService()),
-          // ChangeNotifierProvider(create: (_) => UserState()),
         ],
         child: const MyApp(isJailbroken: false),
       ),

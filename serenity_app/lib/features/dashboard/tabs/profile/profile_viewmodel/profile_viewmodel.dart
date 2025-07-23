@@ -24,9 +24,9 @@ class ProfileViewModel {
 
     final status = response['status'];
     final data = response['data'];
-    if (response['status'] == 200 && response['data'] != null) {
+    if (status == 200 && data != null) {
       try {
-        return AccountProfile.fromJson(response['data']);
+        return AccountProfile.fromJson(data);
       } catch (e) {
         debugPrint("Error parsing profile data: $e");
         return null;
@@ -51,6 +51,7 @@ class ProfileViewModel {
     required TextEditingController apartmentNumberController,
     required TextEditingController emailController,
     required TextEditingController nameController,
+    required TextEditingController statusController,
     required TextEditingController countryController,
     required TextEditingController emergencyConstantNameController,
     required TextEditingController emergencyConstantPhoneController,
@@ -74,6 +75,7 @@ class ProfileViewModel {
       countryOfOrigin: countryController.text.trim(),
       emergencyContactName: emergencyConstantNameController.text.trim(),
       emergencyContactPhone: emergencyConstantPhoneController.text.trim(),
+      status: statusController.text.trim(),
       // clientManager: '',
       // caseManager: '',
       gender: 'Male',
