@@ -1,31 +1,30 @@
-import 'package:flutter/material.dart';
-import 'dart:math' as math;
-import 'package:serenity_app/core/constants/app_colors.dart';
+import 'package:flutter/foundation.dart';
 
-class LoginUI extends StatelessWidget {
-  const LoginUI({super.key});
+class DashboardViewModel extends ChangeNotifier {
+  int _currentIndex = 0;
 
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  final List<int> hiddenIndexes;
 
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Transform.rotate(
-              angle: math.pi / 2,
-              child: Image.asset(
-                'assets/images/topRight.png',
-                width: size.width,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  DashboardViewModel({this.hiddenIndexes = const [4]});
+
+  int get currentIndex => _currentIndex;
+
+  int get navBarIndex {
+    if (hiddenIndexes.contains(_currentIndex)) return -1;
+    return _currentIndex;
+  }
+
+  void setCurrentIndex(int index) {
+    if (_currentIndex != index) {
+      _currentIndex = index;
+      notifyListeners();
+    }
+  }
+
+  void openHiddenScreen(int index) {
+    if (!hiddenIndexes.contains(index)) {
+      throw Exception('Index $index is not registered as hidden screen');
+    }
+    setCurrentIndex(index);
   }
 }

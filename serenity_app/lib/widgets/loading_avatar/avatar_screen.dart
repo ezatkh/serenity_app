@@ -11,27 +11,26 @@ class LoadingAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // The blurred and dimmed background
         Positioned.fill(
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1), // Adjust blur intensity here
+            filter: ImageFilter.blur(sigmaX: 0.8, sigmaY: 0.8),
             child: Container(
-              color: Colors.grey.withOpacity(0.2), // Semi-transparent grey overlay
+              color: Colors.grey.withOpacity(0.2),
             ),
           ),
         ),
         Center(
           child: Container(
-            width: 65,
-            height: 65,
+            width: 70,
+            height: 70,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black26,
-                  blurRadius: 15,
-                  offset: Offset(1, 2),
+                  blurRadius: 10,
+                  offset: Offset(1, 1.5),
                 ),
               ],
             ),

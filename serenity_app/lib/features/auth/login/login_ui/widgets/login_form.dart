@@ -188,7 +188,11 @@ class _LoginFormState extends State<LoginForm> {
         final List<dynamic> accountInfo = data['list'];
         final String userId = accountInfo[0]['id'];
         await SharedPrefsUtil.saveString(USER_ID, userId);
-
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const DashboardUI()),
+                        (route) => false,
+                  );
         Navigator.push(
           context,
           MaterialPageRoute(

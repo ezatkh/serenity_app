@@ -24,6 +24,7 @@
   "subscriptions": "Subscriptions",
   "cases": "Cases",
   "medicalRecords": "Medical Records",
+  "appointments": "Appointments",
   "documents": "Documents",
   "pleaseAcceptTerms": "Please accept the terms and conditions to continue.",
   "profile":"Profile",
@@ -44,5 +45,17 @@
   "joinDate": "Join Date",
   "clientManager": "Client Manager",
   "caseManager": "Case Manager",
-  "gender": "Gender"
+  "gender": "Gender",
+  "owner": "Owner",
+  "type": "Type",
+  "subtype": "Subtype",
+  "noCasesFound": "No Cases Found",
+  "case": "Case",
+  "description": "Description",
+  "resolutionTitle": "Resolution Title",
+  "resolution": "Resolution",
+  "closingDate": "Closing Date",
+  "resolutionDescription": "Resolution Description",
+  "seeMore": "See more",
+  "seeLess": "See less"
 }

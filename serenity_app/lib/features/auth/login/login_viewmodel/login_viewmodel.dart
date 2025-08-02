@@ -54,7 +54,7 @@ class LoginViewModel extends ChangeNotifier {
     required String nif,
     required BuildContext context,
   }) async {
-    final response = await AuthApiService.checkNIF(nif: nif, context: context);
+    final response = await AuthApiService.checkNIF(nif: nif);
 
     final status = response['status'];
     final data = response['data'];

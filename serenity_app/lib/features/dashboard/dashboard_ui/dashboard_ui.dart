@@ -8,23 +8,56 @@ import 'package:serenity_app/features/dashboard/tabs/profile/profile_ui/profile_
 import 'package:serenity_app/features/dashboard/tabs/settings/settings_ui/settings_ui.dart';
 
 import '../../../core/services/local/LocalizationService.dart';
+import '../../cases/cases_ui/cases_ui.dart';
+import '../../cases/cases_ui/widgets/case_item_detail_widget.dart';
+import '../../cases/cases_viewmodel/cases_viewmodel.dart';
+import '../dashboard_viewmodel/dashboard_viewmodel.dart';
 
 class DashboardUI extends StatefulWidget {
+
   const DashboardUI({super.key});
+
 
   @override
   State<DashboardUI> createState() => _DashboardUIState();
 }
 
 class _DashboardUIState extends State<DashboardUI> {
-  int _currentIndex = 0;
 
-  final List<Widget> _tabs =  [
-    HomeUI(),
-    ChatUI(),
-    ProfileUI(),
-    SettingsUI(),
-  ];
+  late List<Widget> _tabs;
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final casesVM = Provider.of<CasesViewModel>(context, listen: false);
+
+    _tabs = [
+      HomeUI(),
+      ChatUI(),
+      ProfileUI(),
+      SettingsUI(),
+      CasesUI(
+        onCaseSelected: (caseItem) {
+          casesVM.selectCase(caseItem);
+          Provider.of<DashboardViewModel>(context, listen: false).setCurrentIndex(5);
+        },
+      ),
+      // Case detail tab
+      Consumer<CasesViewModel>(
+        builder: (context, casesVM, child) {
+          final selectedCase = casesVM.selectedCase;
+          if (selectedCase == null) {
+            return Center(child: Text('No case selected'));
+          }
+          final size = MediaQuery.of(context).size;
+          final scale = (size.shortestSide / 375).clamp(1.0, 1.3);
+          return CaseItemDetailWidget(caseItem: selectedCase, scale: scale);
+        },
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +66,7 @@ class _DashboardUIState extends State<DashboardUI> {
     final iconSize = 24.0 * scale;
 
     var appLocalization = Provider.of<LocalizationService>(context, listen: false);
+    final dashboardVM = Provider.of<DashboardViewModel>(context);
 
     return Scaffold(
       body: AnimatedSwitcher(
@@ -43,9 +77,10 @@ class _DashboardUIState extends State<DashboardUI> {
           opacity: animation,
           child: child,
         ),
-        child: _tabs[_currentIndex],
+        child: _tabs[dashboardVM.currentIndex],
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar:
+      Container(
         decoration: const BoxDecoration(
           color: AppColors.white,
           boxShadow: [
@@ -58,18 +93,18 @@ class _DashboardUIState extends State<DashboardUI> {
         ),
         child: BottomNavigationBar(
           backgroundColor: AppColors.white,
-          currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
+          currentIndex: dashboardVM.currentIndex >= 4 ? 0 : dashboardVM.currentIndex,
+          onTap: (index) => dashboardVM.setCurrentIndex(index),
           selectedItemColor: AppColors.secondaryColor,
           unselectedItemColor: AppColors.grey,
           showSelectedLabels: false,
           showUnselectedLabels: false,
           type: BottomNavigationBarType.fixed,
           items: [
-            buildNavItem(icon: Icons.home, label: appLocalization.getLocalizedString("home"), index: 0, currentIndex: _currentIndex, iconSize: iconSize),
-            buildNavItem(icon: Icons.chat_bubble_outline, label: appLocalization.getLocalizedString("chat"), index: 1, currentIndex: _currentIndex, iconSize: iconSize),
-            buildNavItem(icon: Icons.person_outline, label: appLocalization.getLocalizedString("profile"), index: 2, currentIndex: _currentIndex, iconSize: iconSize),
-            buildNavItem(icon: Icons.settings, label: appLocalization.getLocalizedString("settings"), index: 3, currentIndex: _currentIndex, iconSize: iconSize),
+            buildNavItem(icon: Icons.home, label: appLocalization.getLocalizedString("home"), index: 0, currentIndex: dashboardVM.currentIndex >= 4 ? 0 : dashboardVM.currentIndex, iconSize: iconSize),
+            buildNavItem(icon: Icons.chat_bubble_outline, label: appLocalization.getLocalizedString("chat"), index: 1, currentIndex: dashboardVM.currentIndex >= 4 ? 0 : dashboardVM.currentIndex, iconSize: iconSize),
+            buildNavItem(icon: Icons.person_outline, label: appLocalization.getLocalizedString("profile"), index: 2, currentIndex: dashboardVM.currentIndex >= 4 ? 0 : dashboardVM.currentIndex, iconSize: iconSize),
+            buildNavItem(icon: Icons.settings, label: appLocalization.getLocalizedString("settings"), index: 3, currentIndex: dashboardVM.currentIndex >= 4 ? 0 : dashboardVM.currentIndex, iconSize: iconSize),
           ],
         ),
       ),

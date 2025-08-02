@@ -9,9 +9,7 @@ class ApiRequest {
   static const Duration timeoutDuration = Duration(seconds: 10);
 
   static Future<Map<String, dynamic>> get(
-      String endpoint, {
-        required BuildContext context,
-      }) async {
+      String endpoint) async {
     try {
       final response = await http
           .get(
@@ -24,8 +22,7 @@ class ApiRequest {
           .timeout(timeoutDuration, onTimeout: _onTimeout);
       return await _handleResponse(
         response,
-        context,
-            () => ApiRequest.get(endpoint, context: context), // Wrap the request inside a closure
+            () => ApiRequest.get(endpoint),
       );
     } on TimeoutException {
       return _handleTimeout();
@@ -38,7 +35,6 @@ class ApiRequest {
       String endpoint,
       Map<String, dynamic> body, {
         Map<String, String>? headers,
-        required BuildContext context,
       }) async {
     try {
       final defaultHeaders = {
@@ -54,7 +50,7 @@ class ApiRequest {
         headers: mergedHeaders,
       ).timeout(timeoutDuration, onTimeout: _onTimeout);
 
-      return await _handleResponse(response, context, () => post(endpoint, body, context: context, headers: headers),);
+      return await _handleResponse(response, () => post(endpoint, body, headers: headers),);
     } on TimeoutException {
       return _handleTimeout();
     } catch (e) {
@@ -66,7 +62,6 @@ class ApiRequest {
       String endpoint,
       Map<String, dynamic> body, {
         Map<String, String>? headers,
-        required BuildContext context,
       }) async {
     try {
       final defaultHeaders = {
@@ -84,8 +79,7 @@ class ApiRequest {
 
       return await _handleResponse(
         response,
-        context,
-            () => patch(endpoint, body, context: context, headers: headers),
+            () => patch(endpoint, body, headers: headers),
       );
     } on TimeoutException {
       return _handleTimeout();
@@ -97,7 +91,6 @@ class ApiRequest {
 
   static Future<Map<String, dynamic>> _handleResponse(
       http.Response response,
-      BuildContext context,
       Future<Map<String, dynamic>> Function() apiRequest,
       ) async {
 

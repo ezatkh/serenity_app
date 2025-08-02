@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'avatar_screen.dart';
 
 class LoadingDialog {
   static void show(BuildContext context) {
+
     showGeneralDialog(
       context: context,
       barrierDismissible: false,
-      barrierColor: Colors.black.withOpacity(0.5), // Optional: semi-transparent background
+      barrierColor: Colors.black.withOpacity(0.1),
       transitionDuration: const Duration(milliseconds: 200),
       pageBuilder: (context, animation, secondaryAnimation) {
         return const Scaffold(
           backgroundColor: Colors.transparent,
-          body: Center(
-            child: LoadingAvatar(),
-          ),
+          body: LoadingAvatar(),
         );
       },
     );
