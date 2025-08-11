@@ -2,32 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
-import 'package:serenity_app/data/Models/cases_model.dart';
-
 import '../../../../core/services/local/LocalizationService.dart';
-import '../../../dashboard/dashboard_viewmodel/dashboard_viewmodel.dart';
-import '../../cases_viewmodel/cases_viewmodel.dart';
-import 'caseItem_skeleton.dart';
+import '../../../../data/Models/medical_report_model.dart';
 import '../../../../widgets/expandable_text.dart';
 import '../../../../widgets/label_value_column.dart';
+import '../../../dashboard/dashboard_viewmodel/dashboard_viewmodel.dart';
+import '../../medical_records_viewmodel/medical_records_viewmodel.dart';
+import 'medical_record_item_skeleton.dart';
 
-class CaseItemDetailWidget extends StatefulWidget {
-  final CaseModel caseItem;
+class MedicalRecordItemDetailWidget extends StatefulWidget {
+  final MedicalRecordModel medicalRecordItem;
   final double scale;
   final VoidCallback? onTap;
 
-  const CaseItemDetailWidget({
+  const MedicalRecordItemDetailWidget({
     Key? key,
-    required this.caseItem,
+    required this.medicalRecordItem,
     required this.scale,
     this.onTap,
   }) : super(key: key);
 
   @override
-  State<CaseItemDetailWidget> createState() => _CaseItemDetailWidgetState();
+  State<MedicalRecordItemDetailWidget> createState() => _MedicalRecordItemDetailWidgetState();
 }
 
-class _CaseItemDetailWidgetState extends State<CaseItemDetailWidget> {
+class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailWidget> {
   bool _descExpanded = false;
   bool _resDescExpanded = false;
 
@@ -64,7 +63,7 @@ class _CaseItemDetailWidgetState extends State<CaseItemDetailWidget> {
           statusBarBrightness: Brightness.light,
         ),
         title: Text(
-          '${appLocalization.getLocalizedString("case")} #${widget.caseItem.number}',
+          '${widget.medicalRecordItem.name}',
           style: TextStyle(
             color: Colors.black,
             fontSize: 20 * widget.scale,
@@ -74,7 +73,7 @@ class _CaseItemDetailWidgetState extends State<CaseItemDetailWidget> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.black),
           onPressed: () {
-            dashboardVM.setCurrentIndex(4);
+            dashboardVM.setCurrentIndex(6);
           },
         ),
         iconTheme: const IconThemeData(
@@ -84,17 +83,17 @@ class _CaseItemDetailWidgetState extends State<CaseItemDetailWidget> {
       ),
       backgroundColor: AppColors.white,
       body: SafeArea(
-        child: Consumer<CasesViewModel>(
-          builder: (context, casesVM, child) {
-            if (casesVM.isLoading) {
+        child: Consumer<MedicalRecordsViewModel>(
+          builder: (context, medicalRecordsVM, child) {
+            if (medicalRecordsVM.isLoading) {
               return ListView.builder(
                 itemCount: 5,
-                itemBuilder: (context, index) => const CaseItemSkeleton(),
+                itemBuilder: (context, index) => const MedicalRecordItemSkeleton(),
               );
-            } else if (casesVM.cases.isEmpty) {
+            } else if (medicalRecordsVM.medicalRecords.isEmpty) {
               return Center(
                 child: Text(
-                  appLocalization.getLocalizedString("no_cases_found"),
+                  appLocalization.getLocalizedString("no_medicalRecords_found"),
                   style: TextStyle(fontSize: 16 * widget.scale),
                 ),
               );
@@ -118,9 +117,8 @@ class _CaseItemDetailWidgetState extends State<CaseItemDetailWidget> {
                     child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Name (Title)
                       Text(
-                        widget.caseItem.name ?? '',
+                        widget.medicalRecordItem.name ?? '',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16 * widget.scale,
@@ -132,17 +130,8 @@ class _CaseItemDetailWidgetState extends State<CaseItemDetailWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           LabelValueColumn(
-                            label: appLocalization.getLocalizedString('status'),
-                            value: widget.caseItem.status ?? '',
-                            labelStyle: labelStyle,
-                            valueStyle: valueStyle.copyWith(
-                              color: AppColors.primaryBoldColor,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          LabelValueColumn(
-                            label: appLocalization.getLocalizedString('owner'),
-                            value: widget.caseItem.createdByName ?? '',
+                            label: appLocalization.getLocalizedString('medicalFolder'),
+                            value: widget.medicalRecordItem.pMRName ?? '',
                             labelStyle: labelStyle,
                             valueStyle: valueStyle,
                           ),
@@ -153,15 +142,8 @@ class _CaseItemDetailWidgetState extends State<CaseItemDetailWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           LabelValueColumn(
-                            label: appLocalization.getLocalizedString('type'),
-                            value: widget.caseItem.type ?? '',
-                            labelStyle: labelStyle,
-                            valueStyle: valueStyle,
-                          ),
-                          const SizedBox(width: 10),
-                          LabelValueColumn(
-                            label: appLocalization.getLocalizedString('subtype'),
-                            value: widget.caseItem.category ?? '',
+                            label: appLocalization.getLocalizedString('uploadDateTime'),
+                            value: widget.medicalRecordItem.createdByName ?? '',
                             labelStyle: labelStyle,
                             valueStyle: valueStyle,
                           ),
@@ -174,63 +156,17 @@ class _CaseItemDetailWidgetState extends State<CaseItemDetailWidget> {
                       ),
                       const SizedBox(height: 6),
                       ExpandableText(
-                        text: widget.caseItem.description ?? '',
+                        text: widget.medicalRecordItem.description ?? '',
                         expanded: _descExpanded,
                         onToggle: () => setState(() => _descExpanded = !_descExpanded),
                         textStyle: valueStyle,
                         seeMoreStyle: seeMoreStyle,
                       ),
                       const SizedBox(height: 32),
-
-                      // Resolution title
-                      Text(
-                        appLocalization.getLocalizedString('resolution'),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18 * widget.scale,
-                          color: AppColors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      // Resolution and closing date row
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          LabelValueColumn(
-                            label: appLocalization.getLocalizedString('resolution'),
-                            value: widget.caseItem.resolution ?? '',
-                            labelStyle: labelStyle,
-                            valueStyle: valueStyle,
-                          ),
-                          const SizedBox(width: 40),
-                          LabelValueColumn(
-                            label: appLocalization.getLocalizedString('closingDate'),
-                            value: widget.caseItem.closingDate ?? '',
-                            labelStyle: labelStyle,
-                            valueStyle: valueStyle,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-
-                      // Resolution Description with See More
-                      Text(
-                        appLocalization.getLocalizedString('resolutionDescription'),
-                        style: labelStyle,
-                      ),
-                      const SizedBox(height: 6),
-                      ExpandableText(
-                        text: widget.caseItem.resolutionDesc ?? '',
-                        expanded: _resDescExpanded,
-                        onToggle: () => setState(() => _resDescExpanded = !_resDescExpanded),
-                        textStyle: valueStyle,
-                        seeMoreStyle: seeMoreStyle,
-                      ),
                     ],
                 ),
                   ),
               );
-              ;
             }
           },
         ),

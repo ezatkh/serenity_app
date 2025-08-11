@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_colors.dart';
+import '../core/constants/app_colors.dart';
 
 class TappableIcon extends StatefulWidget {
   final VoidCallback onTap;

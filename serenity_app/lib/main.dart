@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'core/constants/app_colors.dart';
 import 'features/cases/cases_viewmodel/cases_viewmodel.dart';
 import 'features/dashboard/dashboard_viewmodel/dashboard_viewmodel.dart';
+import 'features/medical_records/medical_records_viewmodel/medical_records_viewmodel.dart';
 import 'features/profile/profile_viewmodel/profile_viewmodel.dart';
 import 'features/splash/splash_ui/splash_ui.dart';
 import 'core/services/local/LocalizationService.dart';
@@ -65,6 +66,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => CasesViewModel()),
           ChangeNotifierProvider(create: (context) => DashboardViewModel()),
           ChangeNotifierProvider(create: (context) => ProfileViewModel()),
+          ChangeNotifierProvider(create: (context) => MedicalRecordsViewModel()),
         ],
         child: const MyApp(isJailbroken: false),
       ),

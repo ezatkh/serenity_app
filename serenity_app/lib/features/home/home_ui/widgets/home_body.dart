@@ -65,7 +65,8 @@ class HomeBody extends StatelessWidget {
                 ),
                 DashboardTile(title: appLocalization.getLocalizedString("medicalRecords"), icon: Icons.medical_services,
                   onTap: () {
-                    // TODO: Navigate to Documents screen
+                    final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
+                    dashboardVM.setCurrentIndex(6);
                   },),
                 DashboardTile(title: appLocalization.getLocalizedString("appointments"), icon: Icons.description,    onTap: () {
                     // TODO: Navigate to Documents screen

@@ -7,4 +7,8 @@ class ApiConstants {
   static String getCasesUrl(String accountId) {
     return '$baseUrl/Account/$accountId/cases';
   }
+
+  static String getMedicalRecordsUrl(String accountId) {
+    return '$baseUrl/Account/$accountId/pMRFiles';
+  }
 }
