@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/constants.dart';
 import '../../../../../core/services/cache/sharedPreferences.dart';
@@ -62,6 +64,35 @@ class MedicalRecordsViewModel extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<Uint8List?> fetchMedicalRecordFile(String fileId) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+
+      final response = await MedicalRecordsApiService.getMedicalRecordFile(fileId: fileId);
+
+      if (response['status'] == 200 && response['data'] != null) {
+        final fileBytes = response['data'];
+        print('Medical record file fetched successfully');
+        return fileBytes;
+      } else {
+        ToastService.show(
+          message: response['error'] ?? 'Failed to fetch file',
+          type: ToastType.error,
+        );
+      }
+    } catch (e) {
+      ToastService.show(
+        message: 'Error fetching medical record file: $e',
+        type: ToastType.error,
+      );
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+    return null;
   }
 
   void clear() {

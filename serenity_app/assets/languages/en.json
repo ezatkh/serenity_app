@@ -62,5 +62,6 @@
   "seeLess": "See less",
   "medicalFolder": "Medical folder",
   "uploadDateTime": "Uploaded datetime",
-  "logout": "Logout"
+  "logout": "Logout",
+  "file": "File"
 }

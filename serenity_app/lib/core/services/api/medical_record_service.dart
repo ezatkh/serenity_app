@@ -10,4 +10,13 @@ class MedicalRecordsApiService {
       url,
     );
   }
+
+  static Future<Map<String, dynamic>> getMedicalRecordFile({
+    required String fileId,
+  }) {
+    final url = ApiConstants.getMedicalReportUrl(fileId);
+    return ApiRequest.get(
+      url,
+    );
+  }
 }

@@ -11,4 +11,8 @@ class ApiConstants {
   static String getMedicalRecordsUrl(String accountId) {
     return '$baseUrl/Account/$accountId/pMRFiles';
   }
+
+  static String getMedicalReportUrl(String fileId) {
+    return '$baseUrl/Attachment/file/$fileId';
+  }
 }

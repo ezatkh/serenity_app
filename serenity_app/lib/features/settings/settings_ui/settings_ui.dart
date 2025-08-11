@@ -18,7 +18,7 @@ class SettingsUI extends StatelessWidget {
     final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
     final profileVM = Provider.of<ProfileViewModel>(context, listen: false);
     final medicalRecordsVM = Provider.of<MedicalRecordsViewModel>(context, listen: false);
-    
+
     casesVM.clear();
     dashboardVM.clear();
     profileVM.clear();

@@ -143,7 +143,7 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Get Task",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -240,6 +240,169 @@
 						"v1",
 						"Account",
 						"66269e8ccb598e60d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Meetings",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d/meetings",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d",
+						"meetings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Cases",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d/cases",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d",
+						"cases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Medical Records",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d/pMRFiles",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d",
+						"pMRFiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Medical File",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Attachment/file/688a332a3b07415cf",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Attachment",
+						"file",
+						"688a332a3b07415cf"
 					]
 				}
 			},
