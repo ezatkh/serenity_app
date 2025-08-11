@@ -90,7 +90,7 @@ class _LoginUIState extends State<LoginUI> {
           if (_isLoading) ...[
             const ModalBarrier(
               dismissible: false,
-              color: Colors.transparent,
+              color: Color.fromRGBO(255, 255, 255, 0.7),
             ),
             Center(
               child: LoadingAnimationWidget.staggeredDotsWave(

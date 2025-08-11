@@ -90,13 +90,90 @@ class ApiRequest {
     }
   }
 
+  static Future<Map<String, dynamic>> getBytes(String endpoint) async {
+    try {
+      print("body is ${endpoint}");
+      final response = await http
+          .get(
+        Uri.parse(endpoint),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Api-Key": API_KEY
+        },
+      )
+          .timeout(timeoutDuration, onTimeout: _onTimeout);
+
+
+      return await _handleBytesResponse(
+        response,
+            () => ApiRequest.getBytes(endpoint),
+      );
+    } on TimeoutException {
+      return _handleTimeout();
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  static Future<Map<String, dynamic>> _handleBytesResponse(
+      http.Response response,
+      Future<Map<String, dynamic>> Function() apiRequest,
+      ) async {
+    debugPrint("_handleBytesResponse|response: ${response.statusCode}");
+
+    switch (response.statusCode) {
+      case 200:
+        return {
+          'success': true,
+          'data': response.bodyBytes,
+          'status': 200,
+        };
+
+      case 401:
+        return {
+          'success': false,
+          'error': 'Request error ${response.body}',
+          'status': 401,
+        };
+
+      case 404:
+        return {
+          'success': false,
+          'error': 'Request error ${response.body}',
+          'status': 404,
+        };
+
+      case 408:
+        return {
+          'success': false,
+          'error': 'Request timed out',
+          'status': 408,
+        };
+
+      case 500:
+        return {
+          'success': false,
+          'error': 'Server error: ${response.body}',
+          'status': 500,
+        };
+
+      default:
+        return {
+          'success': false,
+          'error': 'Error: ${response.body}',
+          'status': response.statusCode,
+        };
+    }
+  }
+
+
 
   static Future<Map<String, dynamic>> _handleResponse(
       http.Response response,
       Future<Map<String, dynamic>> Function() apiRequest,
       ) async {
 
-    debugPrint("Response ${response.statusCode}: ${response.body}");
+    debugPrint("_handleResponse|response: ${response.statusCode}: ${response.body}");
 
     switch (response.statusCode) {
       case 200:

@@ -237,7 +237,7 @@ class _ProfileUIState extends State<ProfileUI> {
                 if (isLoading) ...[
                   const ModalBarrier(
                     dismissible: false,
-                    color: Colors.transparent,
+                    color: Color.fromRGBO(255, 255, 255, 0.7),
                   ),
                   Center(
                     child: LoadingAnimationWidget.staggeredDotsWave(

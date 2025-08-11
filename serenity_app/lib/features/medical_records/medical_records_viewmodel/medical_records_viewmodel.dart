@@ -11,6 +11,7 @@ class MedicalRecordsViewModel extends ChangeNotifier {
   List<MedicalRecordModel> medicalRecords = [];
   MedicalRecordModel? selectedMedicalRecord;
   bool isLoading = false;
+  bool isLoadingFile = false;
   String? errorMessage;
   bool _hasFetched = false;
 
@@ -68,7 +69,7 @@ class MedicalRecordsViewModel extends ChangeNotifier {
 
   Future<Uint8List?> fetchMedicalRecordFile(String fileId) async {
     try {
-      isLoading = true;
+      isLoadingFile = true;
       notifyListeners();
 
       final response = await MedicalRecordsApiService.getMedicalRecordFile(fileId: fileId);
@@ -89,7 +90,7 @@ class MedicalRecordsViewModel extends ChangeNotifier {
         type: ToastType.error,
       );
     } finally {
-      isLoading = false;
+      isLoadingFile = false;
       notifyListeners();
     }
     return null;
@@ -99,6 +100,7 @@ class MedicalRecordsViewModel extends ChangeNotifier {
     medicalRecords = [];
     selectedMedicalRecord = null;
     isLoading = false;
+    isLoadingFile = false;
     errorMessage = null;
     _hasFetched = false;
     notifyListeners();

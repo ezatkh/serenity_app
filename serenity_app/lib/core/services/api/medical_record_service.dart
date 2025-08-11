@@ -15,7 +15,7 @@ class MedicalRecordsApiService {
     required String fileId,
   }) {
     final url = ApiConstants.getMedicalReportUrl(fileId);
-    return ApiRequest.get(
+    return ApiRequest.getBytes(
       url,
     );
   }
