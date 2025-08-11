@@ -25,4 +25,9 @@ class DashboardViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void clear() {
+    _currentIndex = 0;
+    notifyListeners();
+  }
 }

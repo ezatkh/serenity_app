@@ -87,13 +87,18 @@ class _LoginUIState extends State<LoginUI> {
               ),
             ),
           ),
-          if (_isLoading)
-                Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: AppColors.primaryLighterColor,
-                    size: 60,
-                  ),
-                ),
+          if (_isLoading) ...[
+            const ModalBarrier(
+              dismissible: false,
+              color: Colors.transparent,
+            ),
+            Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: AppColors.primaryLighterColor,
+                size: 60,
+              ),
+            ),
+          ]
         ],
       ),
     );

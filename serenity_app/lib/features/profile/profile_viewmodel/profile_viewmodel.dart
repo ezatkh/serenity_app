@@ -150,5 +150,11 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-
+  void clear() {
+    _profile = null;
+    _isEditing = false;
+    _isLoading = false;
+    _isLoaded = false;
+    notifyListeners();
+  }
 }

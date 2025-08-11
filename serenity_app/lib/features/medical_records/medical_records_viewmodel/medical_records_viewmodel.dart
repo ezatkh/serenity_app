@@ -63,4 +63,13 @@ class MedicalRecordsViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void clear() {
+    medicalRecords = [];
+    selectedMedicalRecord = null;
+    isLoading = false;
+    errorMessage = null;
+    _hasFetched = false;
+    notifyListeners();
+  }
 }

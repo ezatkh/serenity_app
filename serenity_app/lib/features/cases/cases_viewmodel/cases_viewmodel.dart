@@ -64,4 +64,13 @@ class CasesViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void clear() {
+    cases = [];
+    selectedCase = null;
+    isLoading = false;
+    errorMessage = null;
+    _hasFetched = false;
+    notifyListeners();
+  }
 }

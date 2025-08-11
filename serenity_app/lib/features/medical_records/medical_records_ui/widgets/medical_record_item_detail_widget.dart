@@ -28,7 +28,6 @@ class MedicalRecordItemDetailWidget extends StatefulWidget {
 
 class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailWidget> {
   bool _descExpanded = false;
-  bool _resDescExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +70,7 @@ class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailW
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.black),
+          icon: const Icon(Icons.arrow_back, color: AppColors.black),
           onPressed: () {
             dashboardVM.setCurrentIndex(6);
           },
