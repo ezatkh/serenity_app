@@ -6,32 +6,47 @@ import '../../../../../core/services/local/toast_service.dart';
 import '../../../../../data/Models/account_profile.dart';
 
 class ProfileViewModel extends ChangeNotifier {
-  bool _isEditing = false;
   AccountProfile? _profile;
+  bool _isEditing = false;
   bool _isLoading = false;
+  bool _isLoaded = false;
 
   bool get isEditing => _isEditing;
+  bool get isLoaded => _isLoaded;
   bool get isLoading => _isLoading;
   AccountProfile? get profile => _profile;
+
+  void setEditing(bool value) {
+    if (_isEditing != value) {
+      _isEditing = value;
+      notifyListeners();
+    }
+  }
+
+  void setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  void setLoaded(bool value) {
+    _isLoaded = value;
+    notifyListeners();
+  }
 
   void toggleEditMode() {
     _isEditing = !_isEditing;
     notifyListeners();
   }
 
-  void _setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
-
-  Future<AccountProfile?> fetchProfile(BuildContext context) async {
-    _setLoading(true);
-
+  Future<AccountProfile?> fetchProfile(BuildContext context, {bool forceRefresh = false}) async {
+    if (_isLoaded && !forceRefresh) return _profile;
+    setLoading(true);
     try {
       final accountId = await SharedPrefsUtil.getString(USER_ID);
 
       if (accountId == null || accountId.isEmpty) {
         debugPrint('No accountId found in Shared Preferences');
+        setLoading(false);
         return null;
       }
 
@@ -44,25 +59,26 @@ class ProfileViewModel extends ChangeNotifier {
 
       if (status == 200 && data != null) {
         _profile = AccountProfile.fromJson(data);
-        notifyListeners();
+        setLoaded(true);
         return _profile;
       } else {
+        setLoaded(false);
         ToastService.show(
           message: response['error'] ?? 'Something went wrong',
           type: ToastType.error,
         );
       }
-    } catch (e, stacktrace) {
+    } catch (e) {
+      setLoaded(false);
       debugPrint("Exception in fetchProfile: $e");
-      debugPrint("Stacktrace: $stacktrace");
 
       ToastService.show(
-        message: 'Unexpected error occurred :${e}',
+        message: 'Unexpected error occurred :$e',
         type: ToastType.error,
       );
     }
     finally {
-      _setLoading(false);
+      setLoading(false);
     }
 
     return null;
@@ -76,15 +92,11 @@ class ProfileViewModel extends ChangeNotifier {
     required TextEditingController doorNumberController,
     required TextEditingController apartmentNumberController,
     required TextEditingController emailController,
-    required TextEditingController nameController,
-    required TextEditingController statusController,
     required TextEditingController countryController,
-    required TextEditingController emergencyConstantNameController,
-    required TextEditingController emergencyConstantPhoneController,
-    required TextEditingController nifController,
+    required String gender,
   }) async {
     try {
-      _setLoading(true);
+      setLoading(true);
 
       final accountId = await SharedPrefsUtil.getString(USER_ID);
       if (accountId == null || accountId.isEmpty) {
@@ -93,20 +105,15 @@ class ProfileViewModel extends ChangeNotifier {
       }
 
       final profile = AccountProfile(
-        name: nameController.text.trim(),
         email: emailController.text.trim(),
-        dateOfBirth: dobController.text.trim(),
+        countryOfOrigin: countryController.text.trim(),
+        gender: gender,
+        doorNumber: doorNumberController.text.trim(),
         billingAddressStreet: addressStreetController.text.trim(),
         billingAddressCity: addressCityController.text.trim(),
         billingAddressPostalCode: addressPostalCodeController.text.trim(),
-        doorNumber: doorNumberController.text.trim(),
         apartmentNumber: apartmentNumberController.text.trim(),
-        countryOfOrigin: countryController.text.trim(),
-        emergencyContactName: emergencyConstantNameController.text.trim(),
-        emergencyContactPhone: emergencyConstantPhoneController.text.trim(),
-        status: statusController.text.trim(),
-        nif: nifController.text.trim(),
-        gender: 'Male',
+        dateOfBirth: dobController.text.trim(),
       );
 
       debugPrint("Updating profile with:");
@@ -139,7 +146,7 @@ class ProfileViewModel extends ChangeNotifier {
       );
     }
     finally {
-      _setLoading(false);
+      setLoading(false);
     }
   }
 

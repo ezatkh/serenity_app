@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../../core/services/api/auth_api_service.dart';
 import '../../../../core/services/local/toast_service.dart';
@@ -33,28 +34,25 @@ class LoginViewModel extends ChangeNotifier {
     return null;
   }
 
-  String? validateContact(String? value) {
-    final trimmed = value?.trim() ?? '';
-    if (trimmed.isEmpty) {
-      return "Email or phone is required";
+  String? validatePhone(String value) {
+    if (value.trim().isEmpty) {
+      return "Mobile is required";
     }
-
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    final isPortuguesePhone = RegExp(r'^\d{9}$');
-    final isInternationalPhone = RegExp(r'^\+\d{7,15}$');
-
-    if (emailRegex.hasMatch(trimmed)) return null;
-    if (isPortuguesePhone.hasMatch(trimmed)) return null;
-    if (isInternationalPhone.hasMatch(trimmed)) return null;
-
-    return "Enter a valid email or phone number";
+    // add more checks if you want
+    return null;
   }
+
+  bool validateTerms(bool isChecked) {
+    return isChecked;
+  }
+
 
   Future<Map<String, dynamic>> handleNifCheck({
     required String nif,
+    required String mobile,
     required BuildContext context,
   }) async {
-    final response = await AuthApiService.checkNIF(nif: nif);
+    final response = await AuthApiService.checkNIF(nif: nif,mobile: mobile);
 
     final status = response['status'];
     final data = response['data'];
@@ -68,7 +66,7 @@ class LoginViewModel extends ChangeNotifier {
       final int total = data['total'] ?? 0;
       if (total == 0) {
         ToastService.show(
-          message: 'No account found for this NIF',
+          message: 'No account found matching the provided information',
           type: ToastType.warning,
         );
       }

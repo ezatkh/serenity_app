@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 import 'package:serenity_app/features/auth/login/login_ui/widgets/login_form.dart';
-
 import '../../../../core/services/local/LocalizationService.dart';
-import '../../../../widgets/loading_avatar/avatar_screen.dart';
 
 class LoginUI extends StatefulWidget {
   const LoginUI({super.key});
@@ -88,7 +87,13 @@ class _LoginUIState extends State<LoginUI> {
               ),
             ),
           ),
-          if (_isLoading) const LoadingAvatar(),
+          if (_isLoading)
+                Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: AppColors.primaryLighterColor,
+                    size: 60,
+                  ),
+                ),
         ],
       ),
     );

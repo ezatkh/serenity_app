@@ -38,7 +38,6 @@ class _CasesUIState extends State<CasesUI> {
     final scale = (size.shortestSide / 375).clamp(1.0, 1.3);
     var appLocalization = Provider.of<LocalizationService>(context, listen: false);
     final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
-    final vm = Provider.of<CasesViewModel>(context, listen: false);
 
     return  WillPopScope(
       onWillPop: () async {

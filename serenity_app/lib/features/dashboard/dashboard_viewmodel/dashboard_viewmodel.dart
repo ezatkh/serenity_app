@@ -1,17 +1,22 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import '../../profile/profile_viewmodel/profile_viewmodel.dart';
 
 class DashboardViewModel extends ChangeNotifier {
   int _currentIndex = 0;
-
-  final List<int> hiddenIndexes;
-
-  DashboardViewModel({this.hiddenIndexes = const [4]});
-
   int get currentIndex => _currentIndex;
 
-  int get navBarIndex {
-    if (hiddenIndexes.contains(_currentIndex)) return -1;
-    return _currentIndex;
+  Future<void> changeTab(BuildContext context, int index) async {
+    if (index == 2) {
+      final profileVM = Provider.of<ProfileViewModel>(context, listen: false);
+
+      if (!profileVM.isLoaded && !profileVM.isLoading) {
+        await profileVM.fetchProfile(context);
+      }
+    }
+
+    _currentIndex = index;
+    notifyListeners();
   }
 
   void setCurrentIndex(int index) {
@@ -19,12 +24,5 @@ class DashboardViewModel extends ChangeNotifier {
       _currentIndex = index;
       notifyListeners();
     }
-  }
-
-  void openHiddenScreen(int index) {
-    if (!hiddenIndexes.contains(index)) {
-      throw Exception('Index $index is not registered as hidden screen');
-    }
-    setCurrentIndex(index);
   }
 }

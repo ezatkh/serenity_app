@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
-import 'package:serenity_app/features/dashboard/tabs/home/home_ui/widgets/home_body.dart';
-import 'package:serenity_app/features/dashboard/tabs/home/home_ui/widgets/home_header.dart';
+import 'package:serenity_app/features/home/home_ui/widgets/home_body.dart';
+import 'package:serenity_app/features/home/home_ui/widgets/home_header.dart';
 
 class HomeUI extends StatelessWidget {
   const HomeUI({super.key});

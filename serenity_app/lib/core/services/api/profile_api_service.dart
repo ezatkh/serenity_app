@@ -6,7 +6,7 @@ class ProfileApiService {
     required String accountId,
   }) {
     return ApiRequest.get(
-      '${ApiConstants.get_accountDetail}/$accountId',
+      '${ApiConstants.accountUrl}/$accountId',
     );
   }
 
@@ -15,7 +15,7 @@ class ProfileApiService {
     required Map<String, dynamic> body,
   }) {
     return ApiRequest.patch(
-      '${ApiConstants.patch_accountDetail}/$accountId',
+      '${ApiConstants.accountUrl}/$accountId',
       body,
     );
   }

@@ -22,45 +22,46 @@ class CasesViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchCases(BuildContext context) async {
-    if (_hasFetched) return;
+    if (_hasFetched || isLoading) return;
+
     isLoading = true;
     errorMessage = null;
     notifyListeners();
 
-    final accountId = await SharedPrefsUtil.getString(USER_ID);
+    try {
+      final accountId = await SharedPrefsUtil.getString(USER_ID);
 
-    if (accountId == null || accountId.isEmpty) {
-      errorMessage = 'No accountId found in Shared Preferences';
+      if (accountId == null || accountId.isEmpty) {
+        errorMessage = 'No accountId found in Shared Preferences';
+        ToastService.show(message: errorMessage!, type: ToastType.error);
+        return;
+      }
+
+      final response = await CasesApiService.getCases(accountId: accountId);
+
+      final status = response['status'];
+      final data = response['data'];
+
+      if (status == 200 && data != null) {
+        try {
+          final List<dynamic> list = data['list'] ?? [];
+          cases = list.map((json) => CaseModel.fromJson(json)).toList();
+          _hasFetched = true;
+        } catch (e) {
+          errorMessage = 'Error parsing cases data: $e';
+          ToastService.show(message: errorMessage!, type: ToastType.error);
+        }
+      } else {
+        errorMessage = response['error'] ?? 'Something went wrong';
+        ToastService.show(message: errorMessage!, type: ToastType.error);
+      }
+    } catch (e) {
+      // Catch exceptions like network errors here
+      errorMessage = 'Failed to fetch cases: $e';
+      ToastService.show(message: errorMessage!, type: ToastType.error);
+    } finally {
       isLoading = false;
       notifyListeners();
-      return;
     }
-
-    final response = await CasesApiService.getCases(
-      accountId: accountId,
-    );
-
-    final status = response['status'];
-    final data = response['data'];
-
-    if (status == 200 && data != null) {
-      try {
-        final List<dynamic> list = data['list'] ?? [];
-        cases = list.map((json) => CaseModel.fromJson(json)).toList();
-        print('Fetched cases count: ${cases.length}');
-        for (var c in cases) {
-          print('Case: ${c.id} - ${c.name} - Status: ${c.status}');
-        }
-      } catch (e) {
-        errorMessage = 'Error parsing cases data: $e';
-        print(errorMessage);
-      }
-    } else {
-      errorMessage = response['error'] ?? 'Something went wrong';
-      print(errorMessage);
-    }
-
-    isLoading = false;
-    notifyListeners();
   }
 }

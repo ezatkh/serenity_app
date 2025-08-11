@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 import 'package:serenity_app/features/dashboard/dashboard_ui/widgets/bottom_navigation_bar_item.dart';
-import 'package:serenity_app/features/dashboard/tabs/home/home_ui/home_ui.dart';
-import 'package:serenity_app/features/dashboard/tabs/chat/chat_ui/chat_ui.dart';
-import 'package:serenity_app/features/dashboard/tabs/profile/profile_ui/profile_ui.dart';
-import 'package:serenity_app/features/dashboard/tabs/settings/settings_ui/settings_ui.dart';
-
 import '../../../core/services/local/LocalizationService.dart';
 import '../../cases/cases_ui/cases_ui.dart';
 import '../../cases/cases_ui/widgets/case_item_detail_widget.dart';
 import '../../cases/cases_viewmodel/cases_viewmodel.dart';
+import '../../chat/chat_ui/chat_ui.dart';
+import '../../home/home_ui/home_ui.dart';
+import '../../profile/profile_ui/profile_ui.dart';
+import '../../settings/settings_ui/settings_ui.dart';
 import '../dashboard_viewmodel/dashboard_viewmodel.dart';
 
 class DashboardUI extends StatefulWidget {
@@ -44,7 +43,6 @@ class _DashboardUIState extends State<DashboardUI> {
           Provider.of<DashboardViewModel>(context, listen: false).setCurrentIndex(5);
         },
       ),
-      // Case detail tab
       Consumer<CasesViewModel>(
         builder: (context, casesVM, child) {
           final selectedCase = casesVM.selectedCase;

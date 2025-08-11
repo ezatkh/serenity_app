@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 import '../../../core/navigation/page_transitions.dart';
 import '../../auth/login/login_ui/login_ui.dart';
-import '../../dashboard/tabs/profile/profile_ui/profile_ui.dart';
 import '../widgets/stripedCircle.dart';
 
 class SplashScreen extends StatefulWidget {

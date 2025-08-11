@@ -11,6 +11,8 @@ class ApiRequest {
   static Future<Map<String, dynamic>> get(
       String endpoint) async {
     try {
+
+      print("body is ${endpoint}");
       final response = await http
           .get(
         Uri.parse(endpoint),

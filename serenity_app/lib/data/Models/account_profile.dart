@@ -16,6 +16,7 @@ class AccountProfile {
   final String? billingAddressPostalCode;
   final String? doorNumber;
   final String? apartmentNumber;
+  final String? phoneNumber;
 
   AccountProfile({
     this.nif,
@@ -35,6 +36,7 @@ class AccountProfile {
     this.billingAddressPostalCode,
     this.doorNumber,
     this.apartmentNumber,
+    this.phoneNumber,
   });
 
   factory AccountProfile.fromJson(Map<String, dynamic> json) {
@@ -56,6 +58,7 @@ class AccountProfile {
       billingAddressPostalCode: json['billingAddressPostalCode'],
       doorNumber: json['doorNumber'],
       apartmentNumber: json['apartmentNumber'],
+      phoneNumber: json['phoneNumber'],
     );
   }
 
@@ -78,6 +81,7 @@ class AccountProfile {
       "billingAddressPostalCode": billingAddressPostalCode,
       "doorNumber": doorNumber,
       "apartmentNumber": apartmentNumber,
+      "phoneNumber": phoneNumber,
     };
   }
 
@@ -101,6 +105,7 @@ billingAddressCity: $billingAddressCity
 billingAddressPostalCode: $billingAddressPostalCode
 doorNumber: $doorNumber
 apartmentNumber: $apartmentNumber
+phoneNumber: $phoneNumber
 ''';
   }
 }
