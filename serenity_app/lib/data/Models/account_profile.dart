@@ -63,27 +63,38 @@ class AccountProfile {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "nIF": nif,
-      "name": name,
-      "emailAddress": email,
-      "dateofbirth": dateOfBirth,
-      "countryOfOrigin": countryOfOrigin,
-      "gender": gender,
-      "status": status,
-      "joiningdate": joinDate,
-      "emergencyContact": emergencyContactName,
-      "contactMobile": emergencyContactPhone,
-      "userName": clientManager,
-      "assignedUserName": caseManager,
-      "billingAddressStreet": billingAddressStreet,
-      "billingAddressCity": billingAddressCity,
-      "billingAddressPostalCode": billingAddressPostalCode,
-      "doorNumber": doorNumber,
-      "apartmentNumber": apartmentNumber,
-      "phoneNumber": phoneNumber,
-    };
+    final data = <String, dynamic>{};
+
+    void addIfNotEmpty(String key, dynamic value) {
+      if (value != null) {
+        if (value is String) {
+          if (value.trim().isNotEmpty) {
+            data[key] = value;
+          }
+        } else {
+          data[key] = value;
+        }
+      }
+    }
+
+    addIfNotEmpty("name", name);
+    addIfNotEmpty("emailAddress", email);
+    addIfNotEmpty("dateofbirth", dateOfBirth);
+    addIfNotEmpty("countryOfOrigin", countryOfOrigin);
+    addIfNotEmpty("gender", gender);
+    addIfNotEmpty("emergencyContact", emergencyContactName);
+    addIfNotEmpty("contactMobile", emergencyContactPhone);
+    addIfNotEmpty("userName", clientManager);
+    addIfNotEmpty("assignedUserName", caseManager);
+    addIfNotEmpty("billingAddressStreet", billingAddressStreet);
+    addIfNotEmpty("billingAddressCity", billingAddressCity);
+    addIfNotEmpty("billingAddressPostalCode", billingAddressPostalCode);
+    addIfNotEmpty("doorNumber", doorNumber);
+    addIfNotEmpty("apartmentNumber", apartmentNumber);
+
+    return data;
   }
+
 
   @override
   String toString() {

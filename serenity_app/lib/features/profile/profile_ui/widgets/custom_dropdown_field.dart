@@ -75,19 +75,6 @@ class CustomDropdownField extends StatelessWidget {
               borderSide: const BorderSide(color: AppColors.grey, width: 1),
             ),
           ),
-          icon: Image.asset(
-            'assets/icons/up_down.png',
-            width: 28,
-            height: 28,
-            color: enabled ? AppColors.black : AppColors.grey,
-          ),
-          dropdownDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.white,
-          ),
-          dropdownMaxHeight: 200, // optional max height for dropdown
-          dropdownWidth: null,
-          offset: const Offset(0, -4), // vertical offset to place menu below the field
           style: TextStyle(
             color: enabled ? AppColors.black : AppColors.grey,
             fontSize: inputFontSize,

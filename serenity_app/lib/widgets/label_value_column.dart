@@ -29,7 +29,7 @@ class LabelValueColumn extends StatelessWidget {
             value,
             style: valueStyle,
             maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+            overflow: TextOverflow.visible,
           ),
         ),
       ],

@@ -85,15 +85,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future<void> updateProfile(BuildContext context, {
-    required TextEditingController dobController,
-    required TextEditingController addressStreetController,
-    required TextEditingController addressCityController,
-    required TextEditingController addressPostalCodeController,
-    required TextEditingController doorNumberController,
-    required TextEditingController apartmentNumberController,
-    required TextEditingController emailController,
-    required TextEditingController countryController,
-    required String gender,
+    required AccountProfile profile,
   }) async {
     try {
       setLoading(true);
@@ -104,20 +96,8 @@ class ProfileViewModel extends ChangeNotifier {
         return;
       }
 
-      final profile = AccountProfile(
-        email: emailController.text.trim(),
-        countryOfOrigin: countryController.text.trim(),
-        gender: gender,
-        doorNumber: doorNumberController.text.trim(),
-        billingAddressStreet: addressStreetController.text.trim(),
-        billingAddressCity: addressCityController.text.trim(),
-        billingAddressPostalCode: addressPostalCodeController.text.trim(),
-        apartmentNumber: apartmentNumberController.text.trim(),
-        dateOfBirth: dobController.text.trim(),
-      );
-
       debugPrint("Updating profile with:");
-      debugPrint(profile.toString());
+      debugPrint(profile.toJson().toString());
 
       final response = await ProfileApiService.updateAccountDetail(
         accountId: accountId,
@@ -127,10 +107,10 @@ class ProfileViewModel extends ChangeNotifier {
       final status = response['status'];
 
       if (status == 200) {
-        ToastService.show(
-          message: 'Profile updated successfully',
-          type: ToastType.success,
-        );
+        // ToastService.show(
+        //   message: 'Profile updated successfully',
+        //   type: ToastType.success,
+        // );
       } else {
         ToastService.show(
           message: response['error'] ?? 'Something went wrong',

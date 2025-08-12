@@ -1,12 +1,17 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:path/path.dart' as path;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 import 'package:serenity_app/core/utils/extensions.dart';
 import '../../../../core/enums/enums.dart';
 import '../../../../core/services/local/LocalizationService.dart';
 import '../../../../core/services/local/pdf_service.dart';
+import '../../../../core/services/local/toast_service.dart';
 import '../../../../data/Models/medical_report_model.dart';
 import '../../../../widgets/expandable_text.dart';
 import '../../../../widgets/label_value_column.dart';
@@ -15,6 +20,7 @@ import '../../medical_records_viewmodel/medical_records_viewmodel.dart';
 import 'clickable_label_value.dart';
 import 'file_popup_menu.dart';
 import 'medical_record_item_skeleton.dart';
+import 'package:open_file/open_file.dart';
 
 class MedicalRecordItemDetailWidget extends StatefulWidget {
   final MedicalRecordModel medicalRecordItem;
@@ -129,12 +135,16 @@ class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailW
                               children: [
                                 Row(
                                   children: [
-                                    Text(
-                                      widget.medicalRecordItem.name.toString().withoutExtension(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16 * widget.scale,
-                                        color: AppColors.black,
+                                    Flexible(
+                                      child: Text(
+                                        widget.medicalRecordItem.name.toString().withoutExtension(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16 * widget.scale,
+                                          color: AppColors.black,
+                                        ),
+                                        softWrap: true,
+                                        overflow: TextOverflow.visible,
                                       ),
                                     ),
                                   ],
@@ -249,9 +259,115 @@ class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailW
     );
   }
 
-  void _handleDownload() {
-    print('Download clicked');
-    // TODO: implement download functionality later
+  Future<bool> _requestStoragePermission() async {
+    if (Platform.isAndroid) {
+      if (await Permission.storage.isGranted) {
+        return true;
+      }
+
+      if (await Permission.storage.isDenied) {
+        var status = await Permission.storage.request();
+        if (status.isGranted) return true;
+      }
+
+      // For Android 11 and above
+      if (await Permission.manageExternalStorage.isGranted) {
+        return true;
+      }
+
+      if (await Permission.manageExternalStorage.isDenied) {
+        var status = await Permission.manageExternalStorage.request();
+        if (status.isGranted) return true;
+      }
+
+      if (await Permission.manageExternalStorage.isPermanentlyDenied ||
+          await Permission.storage.isPermanentlyDenied) {
+        return await _showPermissionDialog();
+      }
+
+      return false;
+    }
+
+    return true; // iOS doesn't need storage permission
+  }
+
+  Future<bool> _showPermissionDialog() async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Permission Required'),
+        content: const Text(
+          'Storage permission is required to download files. Please enable it in app settings.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              openAppSettings();
+              Navigator.of(context).pop(true);
+            },
+            child: const Text('Open Settings'),
+          ),
+        ],
+      ),
+    ) ?? false;
+  }
+
+
+  Future<void> _handleDownload() async {
+    final medicalRecordsVM = Provider.of<MedicalRecordsViewModel>(context, listen: false);
+
+    try {
+      // Step 1: Ask for storage permission
+      final hasPermission = await _requestStoragePermission();
+      if (!hasPermission) {
+        ToastService.show(
+          message: 'Storage permission is required to download the file',
+          type: ToastType.info,
+        );
+        return;
+      }
+
+      // Step 2: Fetch file data from API
+      final response = await medicalRecordsVM.fetchMedicalRecordFile(
+        widget.medicalRecordItem.fileId ?? '',
+      );
+
+      if (response != null && response is Uint8List) {
+        final fileName = widget.medicalRecordItem.fileName ?? 'medical_report.pdf';
+
+        // Step 3: Ask user where to save
+        final selectedDirectory = await FilePicker.platform.getDirectoryPath();
+
+        if (selectedDirectory == null) {
+          print("❌ User canceled folder selection");
+          return;
+        }
+
+        // Step 4: Build file path and save
+        final filePath = path.join(selectedDirectory, fileName);
+        final file = File(filePath);
+        await file.writeAsBytes(response);
+
+        ToastService.show(
+          message: 'Report downloaded successfully',
+          type: ToastType.success,
+        );
+      } else {
+        ToastService.show(
+          message: 'Failed to get PDF data.',
+          type: ToastType.error,
+        );
+      }
+    } catch (e) {
+      ToastService.show(
+        message: "Error downloading file: $e",
+        type: ToastType.error,
+      );
+    }
   }
 
   Future<void> _handleView() async {
@@ -264,9 +380,12 @@ class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailW
 
         final file = await PdfService.savePdf(response, 'medical_report_123');
         if (file != null) {
-          print('File saved successfully');
-          // proceed to preview or share the file
-          await file.delete();
+
+          final result = await OpenFile.open(file.path);
+
+          print('Open file result: ${result.type}');
+
+          // await file.delete();
         } else {
           print('Failed to save the PDF file');
         }      } else {
