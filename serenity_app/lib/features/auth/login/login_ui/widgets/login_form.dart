@@ -24,6 +24,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  String fullPhoneNumber = '';
   final TextEditingController nifController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
   bool _submitted = false;
@@ -52,6 +53,7 @@ class _LoginFormState extends State<LoginForm> {
             controller: nifController,
             keyboardType: TextInputType.number,
             scale:scale,
+            maxLength: 9,
             onChanged: (value) {
               if (nifError != null) {
                 setState(() {
@@ -75,6 +77,8 @@ class _LoginFormState extends State<LoginForm> {
             scale: scale,
             hint: '123456789',
             onChanged: (phoneNumber) {
+              fullPhoneNumber = phoneNumber.completeNumber;
+              print("on changed full number :${fullPhoneNumber}");
               if (phoneError != null) {
                 setState(() {
                   phoneError = null;
@@ -232,12 +236,15 @@ class _LoginFormState extends State<LoginForm> {
         final List<dynamic> accountInfo = data['list'];
         final String userId = accountInfo[0]['id'];
         await SharedPrefsUtil.saveString(USER_ID, userId);
+
+        final normalizedPhone = LoginViewModel.normalizeContact(fullPhoneNumber);
+        print("the normalized phone number is :${normalizedPhone}");
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => OtpUI(
               controller: OtpController(
-                emailOrPhone: mobileController.text,
+                emailOrPhone: normalizedPhone,
                 onVerified: () {
                   Navigator.pushAndRemoveUntil(
                     context,
@@ -250,14 +257,14 @@ class _LoginFormState extends State<LoginForm> {
           ),
         );
       }
-      else {
-        await SharedPrefsUtil.saveString(USER_ID, '66269e8ccb598e60d');
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => const DashboardUI()),
-              (route) => false,
-        );
-      }
+      // else {
+      //   await SharedPrefsUtil.saveString(USER_ID, '66269e8ccb598e60d');
+      //   Navigator.pushAndRemoveUntil(
+      //     context,
+      //     MaterialPageRoute(builder: (_) => const DashboardUI()),
+      //         (route) => false,
+      //   );
+      // }
     } catch (e) {
       // You can handle error here if needed
     } finally {

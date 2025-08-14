@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 import 'package:serenity_app/features/home/home_ui/widgets/program_card.dart';
 import '../../../../../../core/services/local/LocalizationService.dart';
+import '../../../../core/constants/constants.dart';
 import '../../../dashboard/dashboard_viewmodel/dashboard_viewmodel.dart';
 import 'coming_appointment_card.dart';
 import 'dashboard_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
@@ -53,29 +55,50 @@ class HomeBody extends StatelessWidget {
               mainAxisSpacing: 12,
               childAspectRatio: 1.3, // Adjust to control item height
               children: [
-                DashboardTile(title: appLocalization.getLocalizedString("subscriptions"), icon: Icons.star_border,
+                DashboardTile(title: appLocalization.getLocalizedString("medicalRecords"), icon: Icons.medical_services,
                   onTap: () {
-                    // TODO: Navigate to Documents screen
-                  },),
+                    final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
+                    dashboardVM.setCurrentIndex(6);
+                  },
+                ),
                 DashboardTile(title: appLocalization.getLocalizedString("cases"), icon: Icons.folder_open,
                   onTap: () {
                     final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
                     dashboardVM.setCurrentIndex(4);
                   },
                 ),
-                DashboardTile(title: appLocalization.getLocalizedString("medicalRecords"), icon: Icons.medical_services,
+                DashboardTile(title: appLocalization.getLocalizedString("appointments"), icon: Icons.description,
                   onTap: () {
-                    final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
-                    dashboardVM.setCurrentIndex(6);
-                  },),
-                DashboardTile(title: appLocalization.getLocalizedString("appointments"), icon: Icons.description,    onTap: () {
-                    // TODO: Navigate to Documents screen
-                },),
+                  final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
+                  dashboardVM.setCurrentIndex(9);
+                },
+                ),
+                DashboardTile(title: appLocalization.getLocalizedString("emergencyCall"), icon: Icons.add_ic_call,
+                  onTap: () async {
+                    callEmergencyNumber();
+                  },
+                ),
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> callEmergencyNumber() async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: EMERGENCY_NUMBER,
+    );
+
+    if (await canLaunchUrl(launchUri)) {
+      await launchUrl(
+        launchUri,
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      print('Calling not supported on this device');
+    }
   }
 }

@@ -29,7 +29,8 @@ class _OtpUIState extends State<OtpUI> {
     widget.controller.timer.addListener(() => setState(() {}));
     widget.controller.error.addListener(() {
       setState(() {
-        _errorMessage = widget.controller.error.value;
+        _errorMessage = "The activation code you entered is invalid. Please check the code and try again.";
+        // _errorMessage = widget.controller.error.value;
         _isLoading = false; // stop loading on error
       });
     });

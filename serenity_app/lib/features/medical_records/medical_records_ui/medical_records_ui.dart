@@ -51,24 +51,60 @@ class _MedicalRecordsUIState extends State<MedicalRecordsUI> {
             statusBarIconBrightness: Brightness.dark,
             statusBarBrightness: Brightness.light,
           ),
-          title: Text(
-            appLocalization.getLocalizedString("medicalRecords"),
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 20 * scale,
-                fontWeight: FontWeight.w500
-            ),
-          ),
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: AppColors.black),
             onPressed: () {
               dashboardVM.setCurrentIndex(0);
             },
           ),
-          iconTheme: const IconThemeData(
-            color: AppColors.black,
-          ),
           elevation: 0,
+          iconTheme: const IconThemeData(color: AppColors.black),
+          title: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              appLocalization.getLocalizedString("medicalRecords"),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20 * scale,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: ElevatedButton(
+                onPressed: () {
+                  final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
+                  dashboardVM.setCurrentIndex(8);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.secondaryColor, // Purple color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20), // Rounded corners
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                  elevation: 0, // Remove shadow if you want flat look
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.add, color: Colors.white, size: 14 * scale),
+                    SizedBox(width: 4),
+                    Text(
+                      Provider.of<LocalizationService>(context, listen: false).getLocalizedString('new'),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11 * scale,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
         backgroundColor: AppColors.white,
         body: SafeArea(

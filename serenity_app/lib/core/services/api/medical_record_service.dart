@@ -19,4 +19,41 @@ class MedicalRecordsApiService {
       url,
     );
   }
+
+  static Future<Map<String, dynamic>> getMedicalFolders() {
+    const url = ApiConstants.medicalFoldersUrl;
+    return ApiRequest.get(
+      url,
+    );
+  }
+
+  static Future<Map<String, dynamic>> getAttachmentDetail({
+    required String fileId,
+  }) {
+
+    final url = ApiConstants.getAttachmentDetailUrl(fileId);
+    return ApiRequest.get(
+      url,
+    );
+  }
+
+  static Future<Map<String, dynamic>> postAttachment({
+    required Map<String, dynamic> body,
+  }) {
+    const url = ApiConstants.attachmentUrl;
+    return ApiRequest.post(
+        url,
+        body,
+    );
+  }
+
+  static Future<Map<String, dynamic>> postMedicalRecord({
+    required Map<String, dynamic> body,
+  }) {
+    const url = ApiConstants.medicalRecordUrl;
+    return ApiRequest.post(
+      url,
+      body,
+    );
+  }
 }

@@ -40,6 +40,29 @@ class MedicalRecordItemDetailWidget extends StatefulWidget {
 
 class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailWidget> {
   bool _descExpanded = false;
+  String? _fileType;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchAttachmentType();
+    });
+  }
+
+  Future<void> _fetchAttachmentType() async {
+    try {
+      final medicalRecords_VM = Provider.of<MedicalRecordsViewModel>(context, listen: false);
+      final result = await medicalRecords_VM.getAttachmentType(context, widget.medicalRecordItem.fileId ?? "");
+
+      setState(() {
+        _fileType = result;
+      });
+    } catch (e) {
+      print('Error fetching attachment type: $e');
+      _fileType = null;
+    }
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -353,12 +376,12 @@ class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailW
         await file.writeAsBytes(response);
 
         ToastService.show(
-          message: 'Report downloaded successfully',
+          message: 'File downloaded successfully',
           type: ToastType.success,
         );
       } else {
         ToastService.show(
-          message: 'Failed to get PDF data.',
+          message: 'Failed to get file data.',
           type: ToastType.error,
         );
       }
@@ -378,21 +401,20 @@ class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailW
 
       if (response != null && response is Uint8List) {
 
-        final file = await PdfService.savePdf(response, 'medical_report_123');
+        final extension = _fileType ?? 'pdf';
+
+        final file = await FileService.saveFile(response, 'medical_report_123',extension);
         if (file != null) {
-
           final result = await OpenFile.open(file.path);
-
           print('Open file result: ${result.type}');
-
-          // await file.delete();
         } else {
-          print('Failed to save the PDF file');
-        }      } else {
-        print('Failed to get PDF data or wrong format');
+          print('Failed to save the file');
+        }
+      } else {
+        print('Failed to get data or wrong format');
       }
     } catch (e) {
-      print('Error opening PDF: $e');
+      print('Error opening file: $e');
     }
   }
 }

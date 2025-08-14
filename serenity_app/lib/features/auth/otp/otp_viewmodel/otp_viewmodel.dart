@@ -47,7 +47,7 @@ class OtpController {
     error.value = null;
 
     if (!_isValidPhoneNumber(emailOrPhone)) {
-      _setError('Invalid phone number. Please include country code (e.g. +351)');
+      _setError('Invalid phone number');
       return;
     }
 
