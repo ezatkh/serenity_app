@@ -29,7 +29,7 @@ class MedicalRecordItemWidget extends StatelessWidget {
 
     final TextStyle valueStyle = TextStyle(
       fontWeight: FontWeight.w500,
-      fontSize: 13 * scale,
+      fontSize: 12 * scale,
       color: AppColors.primaryBoldColor,
     );
 
@@ -50,59 +50,66 @@ class MedicalRecordItemWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Expanded left content
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title
                 Text(
                   medicalRecordItem.name!,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16 * scale,
-                    color: AppColors.black
+                    color: AppColors.black,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 5),
+
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(appLocalization.getLocalizedString('medicalFolder'), style: labelStyle),
-                        const SizedBox(height: 3),
-                        Text(
-                          medicalRecordItem.pMRName!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13 * scale,
-                            color: Colors.black87,
+                    // First Column: Medical Folder
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            appLocalization.getLocalizedString('medicalFolder'),
+                            style: labelStyle,
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 3),
+                          Text(
+                            medicalRecordItem.pMRName!,
+                            style: valueStyle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(appLocalization.getLocalizedString('uploadDateTime'), style: labelStyle),
-                        const SizedBox(height: 3),
-                        Text(
-                          medicalRecordItem.createdAt!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13 * scale,
-                            color: Colors.black87,
+
+                    const SizedBox(width: 16),
+                    // Second Column: Upload DateTime
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            appLocalization.getLocalizedString('uploadDateTime'),
+                            style: labelStyle,
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 3),
+                          Text(
+                            medicalRecordItem.createdAt!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13 * scale,
+                              color: Colors.black87,
+                            ),
+                            maxLines: null,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

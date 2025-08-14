@@ -1,15 +1,15 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:serenity_app/features/profile/profile_ui/widgets/custom_date_field.dart';
-import 'package:serenity_app/features/profile/profile_ui/widgets/custom_dropdown_field.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/services/local/LocalizationService.dart';
 import '../../../../../core/services/local/toast_service.dart';
 import '../../../../../data/Models/account_profile.dart';
-import '../../../../../widgets/custom_text_field.dart';
-import '../../../../../widgets/loading_dialog.dart';
+import '../../../core/services/api/base/api_service.dart';
 import '../profile_viewmodel/profile_viewmodel.dart';
 import './widgets/body_content.dart';
 
@@ -21,6 +21,9 @@ class ProfileUI extends StatefulWidget {
 }
 
 class _ProfileUIState extends State<ProfileUI> {
+  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
+  bool _pendingFetchAfterReconnect = false;
+
   final List<String> genderOptions = ['Male', 'Female','Custom','Not Specified'];
   String? selectedGender;
   int _currentFetchId = 0;
@@ -52,6 +55,25 @@ class _ProfileUIState extends State<ProfileUI> {
       final viewModel = Provider.of<ProfileViewModel>(context, listen: false);
       viewModel.setEditing(false);
       _fetchAndFillProfile(viewModel);
+    });
+
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .map((results) =>
+    results.isNotEmpty ? results.first : ConnectivityResult.none)
+        .listen((result) {
+      if (result == ConnectivityResult.none) {
+        _pendingFetchAfterReconnect = true;
+        final viewModel = Provider.of<ProfileViewModel>(context, listen: false);
+        viewModel.setEditing(false);
+        ToastService.show(type: ToastType.error, message: 'Internet lost');
+      }
+      else if (_pendingFetchAfterReconnect) {
+        ToastService.show(type: ToastType.success, message: 'Internet reconnected, fetching...');
+        _pendingFetchAfterReconnect = false;
+        final viewModel = Provider.of<ProfileViewModel>(context, listen: false);
+        _fetchAndFillProfile(viewModel);
+      }
     });
 
   }
@@ -102,6 +124,11 @@ class _ProfileUIState extends State<ProfileUI> {
   }
 
   Future<void> _handleProfileEditOrUpdate(ProfileViewModel viewModel) async {
+    bool hasInternet = await ApiRequest().checkConnectivity();
+    if (!hasInternet) {
+      ToastService.show(type: ToastType.error, message: 'No internet connection');
+      return;
+    }
     if (viewModel.isEditing) {
       final profile = AccountProfile(
         email: emailController.text.trim(),
@@ -129,6 +156,7 @@ class _ProfileUIState extends State<ProfileUI> {
 
   @override
   void dispose() {
+    _connectivitySubscription?.cancel();
     nifController.dispose();
     nameController.dispose();
     emailController.dispose();
@@ -182,6 +210,29 @@ class _ProfileUIState extends State<ProfileUI> {
                 centerTitle: true,
                 elevation: 0,
               ),
+              bottomNavigationBar:
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.secondaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      padding: EdgeInsets.symmetric(vertical: 14 * scale),
+                    ),
+                    onPressed:() => _handleProfileEditOrUpdate(profileViewModel),
+                    child: Text(
+                      isEditing
+                          ? appLocalization.getLocalizedString("save")
+                          : appLocalization.getLocalizedString("update"),
+                      style: TextStyle(color: AppColors.white, fontSize: 15 * scale),
+                    ),
+                  ),
+                ),
+              ),
+
               body: Stack(
                 children: [
                   SingleChildScrollView(
@@ -242,8 +293,9 @@ class _ProfileUIState extends State<ProfileUI> {
                               caseManagerController: caseManagerController,
                               clientManagerController: clientManagerController,
                               statusController: statusController,
-                              onSaveOrUpdate: () => _handleProfileEditOrUpdate(profileViewModel),
+                              // onSaveOrUpdate: () => _handleProfileEditOrUpdate(profileViewModel),
                             ),
+
                           ],
                         ),
                       ),

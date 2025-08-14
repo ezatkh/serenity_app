@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:serenity_app/features/appointments/appointment_viewmodel/appointments_viewmodel.dart';
 
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/services/local/LocalizationService.dart';
+import '../../../core/services/cache/sharedPreferences.dart';
 import '../../auth/login/login_ui/login_ui.dart';
 import '../../cases/cases_viewmodel/cases_viewmodel.dart';
 import '../../dashboard/dashboard_viewmodel/dashboard_viewmodel.dart';
@@ -13,17 +15,20 @@ import '../../profile/profile_viewmodel/profile_viewmodel.dart';
 class SettingsUI extends StatelessWidget {
   const SettingsUI({Key? key}) : super(key: key);
 
-  void _logout(BuildContext context) {
+  Future<void> _logout(BuildContext context) async {
     final casesVM = Provider.of<CasesViewModel>(context, listen: false);
     final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
     final profileVM = Provider.of<ProfileViewModel>(context, listen: false);
     final medicalRecordsVM = Provider.of<MedicalRecordsViewModel>(context, listen: false);
+    final appointmentsVM = Provider.of<AppointmentsViewModel>(context, listen: false);
 
     casesVM.clear();
     dashboardVM.clear();
     profileVM.clear();
     medicalRecordsVM.clear();
-
+    appointmentsVM.clear();
+    SharedPrefsUtil.clear();
+    await SharedPrefsUtil.remove('isLoggedIn');
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => LoginUI()),
           (route) => false,

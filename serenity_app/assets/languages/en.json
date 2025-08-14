@@ -56,6 +56,7 @@
   "no_medicalRecords_found": "No Medical Records Found",
   "case": "Case",
   "description": "Description",
+  "chooseDescription": "Choose Description",
   "resolutionTitle": "Resolution Title",
   "resolution": "Resolution",
   "closingDate": "Closing Date",
@@ -72,6 +73,7 @@
   "organizer": "Organizer",
   "new": "New",
   "fileName": "File Name",
+  "chooseFileName": "Choose File Name",
   "supportedTypes": "Supported types: pdf, word,...",
   "chooseMedicalFolder": "Choose Medical Folder",
   "medicalFolder": "Medical Folder"

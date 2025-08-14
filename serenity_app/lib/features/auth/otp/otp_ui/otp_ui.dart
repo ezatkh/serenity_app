@@ -28,12 +28,31 @@ class _OtpUIState extends State<OtpUI> {
     widget.controller.sendOtp();
     widget.controller.timer.addListener(() => setState(() {}));
     widget.controller.error.addListener(() {
+      final errorValue = widget.controller.error.value;
+      print("widget.controller.error : $errorValue");
+
       setState(() {
-        _errorMessage = "The activation code you entered is invalid. Please check the code and try again.";
-        // _errorMessage = widget.controller.error.value;
         _isLoading = false; // stop loading on error
+
+        if (errorValue != null) {
+          if (errorValue.contains("blocked all requests from this device")) {
+            // Custom message for blocked device
+            _errorMessage =
+            "Your device has been temporarily blocked due to unusual activity. Please try again later or use another device.";
+          } else if (errorValue.contains("invalid verification code")) {
+            // Custom message for invalid OTP
+            _errorMessage =
+            "The activation code you entered is invalid. Please check the code and try again.";
+          } else {
+            // Fallback message for other errors
+            _errorMessage = errorValue;
+          }
+        } else {
+          _errorMessage = null;
+        }
       });
     });
+
   }
 
   @override

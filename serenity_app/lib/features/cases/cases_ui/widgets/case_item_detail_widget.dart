@@ -94,7 +94,7 @@ class _CaseItemDetailWidgetState extends State<CaseItemDetailWidget> {
             } else if (casesVM.cases.isEmpty) {
               return Center(
                 child: Text(
-                  appLocalization.getLocalizedString("no_cases_found"),
+                  appLocalization.getLocalizedString("noCasesFound"),
                   style: TextStyle(fontSize: 16 * widget.scale),
                 ),
               );

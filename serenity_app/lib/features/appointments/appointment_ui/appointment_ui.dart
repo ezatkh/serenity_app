@@ -82,11 +82,25 @@ class _AppointmentsUIState extends State<AppointmentsUI> {
                 );
               } else if (appointmentsVM.appointments.isEmpty) {
                 return Center(
-                  child: Text(
-                    appLocalization.getLocalizedString("no_appointments_found"),
-                    style: TextStyle(fontSize: 16 * scale),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        'assets/images/empty_box.png',
+                        width: 120 * scale,
+                        height: 120 * scale,
+                        fit: BoxFit.contain,
+                        color: AppColors.grey,
+                      ),
+                      SizedBox(height: 16 * scale), // spacing adjusts with scale
+                      Text(
+                        appLocalization.getLocalizedString("no_appointments_found"),
+                        style: TextStyle(fontSize: 16 * scale,color: AppColors.grey),
+                      ),
+                    ],
                   ),
                 );
+
               }else {
                 return RefreshIndicator(
                   onRefresh: () async {

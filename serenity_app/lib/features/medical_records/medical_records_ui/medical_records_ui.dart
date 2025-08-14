@@ -25,7 +25,7 @@ class _MedicalRecordsUIState extends State<MedicalRecordsUI> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final medicalRecordsVM = Provider.of<MedicalRecordsViewModel>(context, listen: false);
-      if (!medicalRecordsVM.isLoading && medicalRecordsVM.medicalRecords.isEmpty) {
+      if (!medicalRecordsVM.isLoading) {
         medicalRecordsVM.fetchMedicalRecords(context);
       }
     });
@@ -66,7 +66,7 @@ class _MedicalRecordsUIState extends State<MedicalRecordsUI> {
               appLocalization.getLocalizedString("medicalRecords"),
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 20 * scale,
+                fontSize: 18 * scale,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -117,11 +117,25 @@ class _MedicalRecordsUIState extends State<MedicalRecordsUI> {
                 );
               } else if (medicalRecordsVM.medicalRecords.isEmpty) {
                 return Center(
-                  child: Text(
-                    appLocalization.getLocalizedString("no_medicalRecords_found"),
-                    style: TextStyle(fontSize: 16 * scale),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        'assets/images/empty_box.png',
+                        width: 120 * scale,
+                        height: 120 * scale,
+                        fit: BoxFit.contain,
+                        color: AppColors.grey,
+                      ),
+                      SizedBox(height: 16 * scale), // spacing adjusts with scale
+                      Text(
+                        appLocalization.getLocalizedString("no_medicalRecords_found"),
+                        style: TextStyle(fontSize: 16 * scale,color: AppColors.grey),
+                      ),
+                    ],
                   ),
                 );
+
               }else {
                 return RefreshIndicator(
                   onRefresh: () async {

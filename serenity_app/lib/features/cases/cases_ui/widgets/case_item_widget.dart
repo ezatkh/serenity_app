@@ -71,31 +71,34 @@ class CaseItemWidget extends StatelessWidget {
                 Row(
                   children: [
                     // Status label and value
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(appLocalization.getLocalizedString('status'), style: labelStyle,),
-                        const SizedBox(height: 3),
-                        Text(caseItem.status!, style: valueStyle),
-                      ],
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(appLocalization.getLocalizedString('status'), style: labelStyle,),
+                          const SizedBox(height: 3),
+                          Text(caseItem.status!, style: valueStyle),
+                        ],
+                      ),
                     ),
-                    const SizedBox(width: 24),
-
-                    // Owner label and value
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(appLocalization.getLocalizedString('owner'), style: labelStyle),
-                        const SizedBox(height: 3),
-                        Text(
-                          caseItem.createdByName!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13 * scale,
-                            color: Colors.black87,
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(appLocalization.getLocalizedString('owner'), style: labelStyle),
+                          const SizedBox(height: 3),
+                          Text(
+                            caseItem.createdByName!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13 * scale,
+                              color: Colors.black87,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -104,37 +107,41 @@ class CaseItemWidget extends StatelessWidget {
                 // Info row 2: Type and Subtype
                 Row(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(appLocalization.getLocalizedString('type'), style: labelStyle),
-                        const SizedBox(height: 3),
-                        Text(
-                          caseItem.type!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13 * scale,
-                            color: Colors.black87,
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(appLocalization.getLocalizedString('type'), style: labelStyle),
+                          const SizedBox(height: 3),
+                          Text(
+                            caseItem.type!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13 * scale,
+                              color: Colors.black87,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    const SizedBox(width: 24),
-
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(appLocalization.getLocalizedString('subtype'), style: labelStyle),
-                        const SizedBox(height: 3),
-                        Text(
-                          caseItem.category!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13 * scale,
-                            color: Colors.black87,
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(appLocalization.getLocalizedString('subtype'), style: labelStyle),
+                          const SizedBox(height: 3),
+                          Text(
+                            caseItem.category!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13 * scale,
+                              color: Colors.black87,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),

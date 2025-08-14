@@ -157,6 +157,7 @@ class _MedicalRecordNewItemState extends State<MedicalRecordNewItem> {
                                 scale: scale,
                                 labelColor: AppColors.greyLabelText,
                                 enabled: true,
+                                hint: appLocalization.getLocalizedString("chooseFileName"),
                               ),
                             ),
                             if (_saved && fileNameError != null)
@@ -205,12 +206,12 @@ class _MedicalRecordNewItemState extends State<MedicalRecordNewItem> {
                             Padding(
                               padding: const EdgeInsets.only(top: 8,left: 8,right: 8),
                               child: CustomTextField(
-                                label:
-                                appLocalization.getLocalizedString("description"),
+                                label: appLocalization.getLocalizedString("description"),
                                 controller: descriptionController,
                                 scale: scale,
                                 labelColor: AppColors.greyLabelText,
                                 enabled: true,
+                                hint: appLocalization.getLocalizedString("chooseDescription"),
                               ),
                             ),
                             if (_saved && descriptionError != null)
@@ -313,6 +314,8 @@ class _MedicalRecordNewItemState extends State<MedicalRecordNewItem> {
     );
 
     if (success) {
+      final dashboardVM = Provider.of<DashboardViewModel>(context, listen: false);
+      dashboardVM.setCurrentIndex(6);
       descriptionController.clear();
       fileNameController.clear();
       selectedFile = null;
