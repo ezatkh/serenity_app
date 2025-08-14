@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final Color? labelColor;
   final bool enabled;
   final ValueChanged<String>? onChanged;
+  final int? maxLength;
 
 
   const CustomTextField({
@@ -24,13 +25,14 @@ class CustomTextField extends StatelessWidget {
     this.labelColor,
     this.enabled = true,
     this.onChanged,
+    this.maxLength,
   });
 
   @override
   Widget build(BuildContext context) {
     final labelFontSize = (12.0 * scale).clamp(12.0, 14.0);
-    final inputFontSize = (14.0 * scale).clamp(14.0, 16.0);
-    final hintFontSize = (13.0 * scale).clamp(13.0, 15.0);
+    final inputFontSize = (13.0 * scale).clamp(13.0, 15.0);
+    final hintFontSize = (13.0 * scale).clamp(13.0, 13.0);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,6 +50,7 @@ class CustomTextField extends StatelessWidget {
           enabled: enabled,
           controller: controller,
           keyboardType: keyboardType,
+          maxLength: maxLength,
           style: TextStyle(
             fontWeight: FontWeight.w400,
             color: enabled ? AppColors.black : AppColors.grey,

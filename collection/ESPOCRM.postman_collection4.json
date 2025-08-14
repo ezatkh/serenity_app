@@ -1,0 +1,579 @@
+{
+	"info": {
+		"_postman_id": "65e2e476-a7fc-4f9f-a8f4-87ef89442553",
+		"name": "ESPOCRM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5269253",
+		"_collection_link": "https://curamet.postman.co/workspace/Curamet~92fd76ce-cd8e-44d8-94ab-b4c925dc94ff/collection/5269253-65e2e476-a7fc-4f9f-a8f4-87ef89442553?action=share&source=collection_link&creator=5269253"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "a47b891d45870305fcba22d493f3b125",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"POST Name\",\n    \"gender\": \"Male\",\n    \"emailAddress\": \"alaa.banifadel11@gmail.com\",\n    \"phoneNumber\" : \"0709685213\",\n    \"billingAddressStreet\" : \"Address line 1\",\n    \"billingAddressCity\" : \"City\",\n    \"billingAddressPostalCode\" : \"Zip Code\",\n    \"billingAddressCountry\" : \"Country / Region\",\n    \"billingAddressState\" : \"State\",\n    \"programType\" : [\"Plan12\"],\n    \"apartmentNumber\": \"Apartment, suite, etc. (optional)\",\n    \"nonMemberProduct\": \"yes\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get account",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search account by NIF",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account?where[0][type]=equals&where[0][attribute]=nIF&where[0][value]=125171849",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account"
+					],
+					"query": [
+						{
+							"key": "where[0][type]",
+							"value": "equals"
+						},
+						{
+							"key": "where[0][attribute]",
+							"value": "nIF"
+						},
+						{
+							"key": "where[0][value]",
+							"value": "125171849"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Task",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Task/664ccbcfa872aa9ca",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Task",
+						"664ccbcfa872aa9ca"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update account",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"description\",\n    \"dateofbirth\": \"1991-05-15\",\n    \"billingAddressStreet\": \"my new address street\",\n    \"apartmentNumber\": \"A12\",\n    \"billingAddressCity\" : \"Lisbon\",\n    \"billingAddressPostalCode\" : \"15-153\",\n    \"doorNumber\" : \"4\",\n    \"gender\" : \"Male\",\n    \"phoneNumber\" :  \"709685213\",\n    \"emailAddress\" : \"sertowhiz@gmail.com\",\n    \"countryOfOrigin\" : \"Portugal\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d",
+					"protocol": "http",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Meetings",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d/meetings",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d",
+						"meetings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Cases",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d/cases",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d",
+						"cases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Medical Records",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Account/66269e8ccb598e60d/pMRFiles",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Account",
+						"66269e8ccb598e60d",
+						"pMRFiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Medical File",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Attachment/file/689b216d921768dee",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Attachment",
+						"file",
+						"689b216d921768dee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Attachment File Info",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Attachment/689b216d921768dee",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Attachment",
+						"689b216d921768dee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Medical Folders",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/PMR",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"PMR"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Medical Record Attachment",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"WhatsApp Image 2025-06-16 at 23.12.15.jpeg\",\n  \"type\": \"image/jpeg\",\n  \"role\": \"Attachment\",\n  \"relatedType\": \"PMRFile\",\n  \"field\": \"file\",\n  \"file\": \"data:image/jpeg;base64,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ACts7IF5gAAAALVLqic7BQAAAANxOgAAAADHbC5BkABlrlchcAAAAAAWvlpNyJoAAAADcToAAAABXLTO4BAAGekWZi8wAAAAAFql1ROegAAAAG4nQAAAADKsxeYAAAFK653EC5AAAAAAtfPSbCaAAAA3E6AAAAAYC8wAAAAKV1rcUFyAAAAAvS01cTYAAAG4nQAAABE1TIXAEQglAlAlAlAUuuc01uZQSbUuAAAaq2nQJQAANxOgAAAComQuAAAAAAAECZjXMAAAC1ybCaAAA//aAAwDAQACAAMAAAAh88888888888888888888888888IEU888888888888888AEwA8888888888888888888888888888888888888888888888888888888888888818yy72888888888888888888/8uOtNc88888888888888888888888888888888888888888888888888188888888888888888888887lR8888888888888888888888LHNF8888888888888/wD9PNOPffmMUvPPPPPPPPPPPPLv6kyojpZeHvPPPPPPPPPPPPPLXP8Az+8yrTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzySgTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzTTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzxzzzzzzzzzzzzzzzzzzzxzzzzzziSTjzzzzzzzzzzzzzzzzzzzz3333733333333333333j3zzzz3/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wDv88888wQ8k04QI888888888888888884wwwwwwwwwwwwwwwwwww88888U8480w80088888888888U8888UM88sMMM888888888888U8888sMMMMMMMMMMMMMMMMMMM88888888888888888888888888888oI4oM4k4ogIEI62nK+wdy8888ogsMoHOCuJ38888888888888888888888888888888888888888xxxxxxxxxxxxxxxxxxx138888CAAAAAAAPNEODAAAAAAA18888CAAAAAAADAhxjAAAAAAAd8888NNNNNNNNNNNNNNNNNNNdf8APPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPMs0kNvPPPPPPPPPPPPPPPPPPPQgggkn/PPPPPPONPPPPPPPPPAAggggkk+MqsA0gks/PPPPPPLggggggje6wgggggggvPPPPPPAQggggTffawgggggggvPPPPPOAgggjvffffTQggggggvPPPPPKggglPfffffbCwgggggvPPPPPIAgglvffffffTAgggggvPPPPPIAggkPffffffbCgggggvPPPPPKwgggt/ffffffYQggggvPPPPOIgggggk/fffffegggggvPPPPKQgggggggfPffffSQgggvPPPPIAgggggggn/ffffYQgggv/9oADAMBAAIAAwAAABDzzzzzzzzzzzzzzzzzzzzzzzzzwAzzzzzzzzzzzzzzzzzjyADzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzT3jLPHXzzzzzzzzzzzzzzzzzy5/yw61/zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz/7zzzzzzzzzzzzzzzzzzzzzz6V7zzzzzzzzzzzzzzzzzzzzzwBIUfzzzzzzzzzzzzzl3zjzzLbxSkPzzzzzzzzzzzzy9lWGV5kKz+zzzzzzzzzzzzzzy78z+yw95fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzy6Y7zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzjzzzzzzzzzzzzzzzzzzzzzzzw7zzzzzzzzzzzzzzzzzzzzzzzwf3333333333333333323Tzzzz2hxiXzzzzzzzzzzzzzzz3zzzxb77637777777777777793zzzy73333333333333333333zzzzy5K4YJjIpzzzzzzzzzzzzzzzzzjDDDDDDDDDDDDDDDDDDDTzzzxTjzjTDDzTzzzzzzzzzzxTzzzxTxxxyzyzzzzzzzzzzzzxTzzzywwwwwwwwwwwwwwwwwwwxzzzzzzzzzzzzzzzzzzzzzzzzzzzzygjxyAJIrqxrgh9vROJzq/zzzyiCxKjq5O5XHzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzTDDDDDDDDDDDDDDDDDDD/zzzwkAAAAAAAEccwsAAAAAABTzzzyEAAAAAACFELEIAAAAAABTzzzxwwwwwwwwwwwwwwwwwwwz/wA888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888808888888888888888888888pNuu98888888888888888888qf++++W888888808888888888e+++++ux402vtv+u88888888o+++++6zE/wDvvvvvvvvPPPPPPHvvvvt4AQV/vvvvvvvvPPPPPOH/AL76gEEEEF77777777zzzzzyj777gEEEEEFHf777777zzzzzzT776wEEEEEEFL777777zzzzzxf777gEEEEEEFH777777zzzzzzT7774wEEEEEEHb77777zzzzzh777764kEEEEEFL77777zzzzz77577774skEEEEF37777zzzzyP77777776OEEEEF/wC+++//xAAzEQABAgMHAQUIAgMAAAAAAAABAAIRElEDExQgITFhMARAQeHwECIjMlBwccGBoWCRsf/aAAgBAgEBPwD/AC2ysDaCIKPZngRHrxT+zvaYBDs1oTosNaUQsHFocPGP9JzS0ynubXuaCAd0bZ5jE7o29ofFX9pGMVfPhCKbavaIBOcXGJ+pAE6BOaW6Ed3srKbU7KxYxpiF2hge2CfZuZv3axILArIRMVaiBinCIges1sycAACDlgIboggwKa4tMQuz2wLYlWjgdla2oAlHWYXN95qaGOLXEQinP0II8kXRtQ122ic/QgjyUSbSB2h+lH3B+T+kX/FIOxiE+LfcVnayJ9s52g064JGyJJ3Rc47lEk7oucdCVM6MYqJhBB0XRdqiYmP2Kj3lziwytV6+qvX1V6+qvX1V6+qvX1V6+qvX1V6+qvX1V6+qvX1V6+qvX1V6+qvX1V6+qvX1V6+qdAgOy2vznJZ7/wAH/ncD8g/J/WV7STMNipTRSmilNFAqU0UpopTRSmilNFKaKU0UpopTRSmilNFKaKU0UpopTRPE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\"  // your base64-encoded data here\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/Attachment",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Attachment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Medical Record",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e966a4c57ada1172e34894295d328d10",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Api-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"API description\",\n    \"name\" : \"new file from api\",\n    \"pMRId\" : \"64d6001b6148e921d\",\n    \"accountId\": \"66269e8ccb598e60d\",\n    \"fileId\": \"689b216d921768dee\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandbox.serenity-portugal.com/api/v1/pMRFile",
+					"protocol": "https",
+					"host": [
+						"sandbox",
+						"serenity-portugal",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"pMRFile"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

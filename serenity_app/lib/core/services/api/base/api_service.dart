@@ -11,8 +11,7 @@ class ApiRequest {
   static Future<Map<String, dynamic>> get(
       String endpoint) async {
     try {
-
-      print("body is ${endpoint}");
+      print("url is ${endpoint}");
       final response = await http
           .get(
         Uri.parse(endpoint),
@@ -35,24 +34,25 @@ class ApiRequest {
 
   static Future<Map<String, dynamic>> post(
       String endpoint,
-      Map<String, dynamic> body, {
-        Map<String, String>? headers,
-      }) async {
+      Map<String, dynamic> body) async {
     try {
       final defaultHeaders = {
         "Content-Type": "application/json",
-        "API_KEY": API_KEY
+        "X-Api-Key": API_KEY
       };
-      final mergedHeaders = headers ?? defaultHeaders;
+
+      print("header\n${defaultHeaders}");
+      print("url\n${endpoint}");
+      print("body\n${body}");
 
       final response = await http
           .post(
         Uri.parse(endpoint),
         body: json.encode(body),
-        headers: mergedHeaders,
+        headers: defaultHeaders,
       ).timeout(timeoutDuration, onTimeout: _onTimeout);
 
-      return await _handleResponse(response, () => post(endpoint, body, headers: headers),);
+      return await _handleResponse(response, () => post(endpoint, body),);
     } on TimeoutException {
       return _handleTimeout();
     } catch (e) {

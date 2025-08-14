@@ -46,6 +46,11 @@ class LoginViewModel extends ChangeNotifier {
     return isChecked;
   }
 
+  static String normalizeContact(String input) {
+    return input.trim();
+  }
+
+
 
   Future<Map<String, dynamic>> handleNifCheck({
     required String nif,
