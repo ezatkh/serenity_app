@@ -30,7 +30,7 @@ class BodyFields extends StatelessWidget {
   final TextEditingController caseManagerController;
   final TextEditingController clientManagerController;
   final TextEditingController statusController;
-  final VoidCallback onSaveOrUpdate;
+  // final VoidCallback onSaveOrUpdate;
 
   const BodyFields({
     Key? key,
@@ -57,7 +57,7 @@ class BodyFields extends StatelessWidget {
     required this.caseManagerController,
     required this.clientManagerController,
     required this.statusController,
-    required this.onSaveOrUpdate,
+    // required this.onSaveOrUpdate,
   }) : super(key: key);
 
   @override
@@ -255,27 +255,27 @@ class BodyFields extends StatelessWidget {
             ),
           ),
         const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.secondaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                padding: EdgeInsets.symmetric(vertical: 14 * scale),
-              ),
-              onPressed: onSaveOrUpdate,
-              child: Text(
-                isEditing
-                    ? appLocalization.getLocalizedString("save")
-                    : appLocalization.getLocalizedString("update"),
-                style: TextStyle(color: AppColors.white, fontSize: 15 * scale),
-              ),
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        //   child: SizedBox(
+        //     width: double.infinity,
+        //     child: ElevatedButton(
+        //       style: ElevatedButton.styleFrom(
+        //         backgroundColor: AppColors.secondaryColor,
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(12)),
+        //         padding: EdgeInsets.symmetric(vertical: 14 * scale),
+        //       ),
+        //       onPressed: onSaveOrUpdate,
+        //       child: Text(
+        //         isEditing
+        //             ? appLocalization.getLocalizedString("save")
+        //             : appLocalization.getLocalizedString("update"),
+        //         style: TextStyle(color: AppColors.white, fontSize: 15 * scale),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

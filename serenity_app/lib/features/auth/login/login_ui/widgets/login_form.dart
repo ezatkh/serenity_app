@@ -108,7 +108,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       side: const BorderSide(
                         color: AppColors.grey,
-                        width: 1.5,
+                        width: 1,
                       ),
                       visualDensity: VisualDensity.compact,
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -123,6 +123,7 @@ class _LoginFormState extends State<LoginForm> {
                       });
                     },
                     activeColor: AppColors.secondaryColor,
+                    checkColor: Colors.white,
                   ),
                 ),
               ),
@@ -239,6 +240,7 @@ class _LoginFormState extends State<LoginForm> {
 
         final normalizedPhone = LoginViewModel.normalizeContact(fullPhoneNumber);
         print("the normalized phone number is :${normalizedPhone}");
+        await SharedPrefsUtil.saveString('isLoggedIn', 'true');
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -257,14 +259,14 @@ class _LoginFormState extends State<LoginForm> {
           ),
         );
       }
-      // else {
-      //   await SharedPrefsUtil.saveString(USER_ID, '66269e8ccb598e60d');
-      //   Navigator.pushAndRemoveUntil(
-      //     context,
-      //     MaterialPageRoute(builder: (_) => const DashboardUI()),
-      //         (route) => false,
-      //   );
-      // }
+      else {
+        await SharedPrefsUtil.saveString(USER_ID, '66269e8ccb598e60d');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const DashboardUI()),
+              (route) => false,
+        );
+      }
     } catch (e) {
       // You can handle error here if needed
     } finally {

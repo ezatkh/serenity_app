@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../../core/services/api/auth_api_service.dart';
+import '../../../../core/services/cache/sharedPreferences.dart';
 import '../../../../core/services/local/toast_service.dart';
 
 class LoginViewModel extends ChangeNotifier {
@@ -63,6 +64,21 @@ class LoginViewModel extends ChangeNotifier {
     final data = response['data'];
 
     if (status != 200) {
+      print("data is ${data}");
+
+
+      // await SharedPrefsUtil.saveString('userName', data["name"]?.toString() ?? "NA");
+      // String programType = "NA";
+      // if (data["programType"] != null) {
+      //   if (data["programType"] is List && data["programType"].isNotEmpty) {
+      //     programType = data["programType"][0]?.toString() ?? "NA";
+      //   } else if (data["programType"] is String) {
+      //     programType = data["programType"];
+      //   }
+      // }
+      // await SharedPrefsUtil.saveString('programType', programType);
+      // await SharedPrefsUtil.saveString('status', data["status"]?.toString() ?? "NA");
+
       ToastService.show(
         message: response['error'] ?? 'Something went wrong',
         type: ToastType.error,

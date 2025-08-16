@@ -29,7 +29,7 @@ class MedicalRecordsViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchMedicalRecords(BuildContext context) async {
-    if (_hasFetched || isLoading) return;
+    if (isLoading) return;
 
     isLoading = true;
     errorMessage = null;
@@ -248,7 +248,7 @@ class MedicalRecordsViewModel extends ChangeNotifier {
 
       if (success && status == 200) {
         ToastService.show(
-          message: 'file downloaded successfully',
+          message: 'Medical record saved successfully',
           type: ToastType.success,
         );
         return true;
@@ -262,9 +262,9 @@ class MedicalRecordsViewModel extends ChangeNotifier {
         return false;
       }
     } catch (e) {
-      debugPrint('Exception in updateProfile: $e');
+      debugPrint('Unexpected error occurred while uploaded new file.:${e}');
       ToastService.show(
-        message: 'Unexpected error occurred while uploaded new file.',
+        message: 'Unexpected error occurred while uploaded new file.:${e}',
         type: ToastType.error,
       );
       return false;
@@ -324,7 +324,6 @@ class MedicalRecordsViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   void clear() {
     medicalRecords = [];

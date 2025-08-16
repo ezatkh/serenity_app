@@ -76,6 +76,12 @@ class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailW
       fontSize: 11 * widget.scale,
     );
 
+    final valueMedicalStyle = TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 14 * widget.scale,
+      color: AppColors.primaryBoldColor,
+    );
+
     final valueStyle = TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 14 * widget.scale,
@@ -177,12 +183,12 @@ class _MedicalRecordItemDetailWidgetState extends State<MedicalRecordItemDetailW
                                   label: appLocalization.getLocalizedString('medicalFolder'),
                                   value: widget.medicalRecordItem.pMRName ?? '',
                                   labelStyle: labelStyle,
-                                  valueStyle: valueStyle,
+                                  valueStyle: valueMedicalStyle,
                                 ),
                                 const SizedBox(height: 18),
                                 LabelValueColumn(
                                   label: appLocalization.getLocalizedString('uploadDateTime'),
-                                  value: widget.medicalRecordItem.createdByName ?? '',
+                                  value: widget.medicalRecordItem.createdAt ?? '',
                                   labelStyle: labelStyle,
                                   valueStyle: valueStyle,
                                 ),

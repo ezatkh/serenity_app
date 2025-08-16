@@ -5,7 +5,6 @@ class LabelValueColumn extends StatelessWidget {
   final String value;
   final TextStyle labelStyle;
   final TextStyle valueStyle;
-  final double width;
 
   const LabelValueColumn({
     Key? key,
@@ -13,7 +12,6 @@ class LabelValueColumn extends StatelessWidget {
     required this.value,
     required this.labelStyle,
     required this.valueStyle,
-    this.width = 140, // default width
   }) : super(key: key);
 
   @override
@@ -23,14 +21,11 @@ class LabelValueColumn extends StatelessWidget {
       children: [
         Text(label, style: labelStyle),
         const SizedBox(height: 4),
-        SizedBox(
-          width: width,
-          child: Text(
-            value,
-            style: valueStyle,
-            maxLines: 2,
-            overflow: TextOverflow.visible,
-          ),
+        Text(
+          value,
+          style: valueStyle,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );

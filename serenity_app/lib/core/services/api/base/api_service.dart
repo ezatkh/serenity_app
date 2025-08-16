@@ -11,6 +11,16 @@ class ApiRequest {
   static Future<Map<String, dynamic>> get(
       String endpoint) async {
     try {
+
+      final hasConnection = await ApiRequest().checkConnectivity();
+      if (!hasConnection) {
+        return {
+          'success': false,
+          'error': 'No internet connection',
+          'status': 503,
+        };
+      }
+
       print("url is ${endpoint}");
       final response = await http
           .get(
@@ -36,6 +46,16 @@ class ApiRequest {
       String endpoint,
       Map<String, dynamic> body) async {
     try {
+
+      final hasConnection = await ApiRequest().checkConnectivity();
+      if (!hasConnection) {
+        return {
+          'success': false,
+          'error': 'No internet connection',
+          'status': 503,
+        };
+      }
+
       final defaultHeaders = {
         "Content-Type": "application/json",
         "X-Api-Key": API_KEY
@@ -66,6 +86,15 @@ class ApiRequest {
         Map<String, String>? headers,
       }) async {
     try {
+      final hasConnection = await ApiRequest().checkConnectivity();
+      if (!hasConnection) {
+        return {
+          'success': false,
+          'error': 'No internet connection',
+          'status': 503,
+        };
+      }
+
       final defaultHeaders = {
         "Content-Type": "application/json",
         "X-Api-Key": API_KEY
@@ -92,6 +121,16 @@ class ApiRequest {
 
   static Future<Map<String, dynamic>> getBytes(String endpoint) async {
     try {
+
+      final hasConnection = await ApiRequest().checkConnectivity();
+      if (!hasConnection) {
+        return {
+          'success': false,
+          'error': 'No internet connection',
+          'status': 503,
+        };
+      }
+
       print("body is ${endpoint}");
       final response = await http
           .get(
@@ -242,6 +281,6 @@ class ApiRequest {
 
   Future<bool> checkConnectivity() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    return connectivityResult != ConnectivityResult.none;
+    return connectivityResult[0] != ConnectivityResult.none;
   }
 }

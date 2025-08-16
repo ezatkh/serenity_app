@@ -8,8 +8,8 @@ class HomeUI extends StatelessWidget {
   const HomeUI({super.key});
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
+    return const AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
         statusBarColor: AppColors.primaryBoldColor,
         statusBarIconBrightness: Brightness.light,
       ),
@@ -17,7 +17,7 @@ class HomeUI extends StatelessWidget {
         backgroundColor: AppColors.primaryBoldColor,
         body: SafeArea(
           child: Column(
-            children: const [
+            children: [
               HomeHeader(username: "Asad"),
               Expanded(child: HomeBody()),
             ],

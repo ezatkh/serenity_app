@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/constants.dart';
 import '../../../../../core/services/api/profile_api_service.dart';
@@ -95,9 +96,6 @@ class ProfileViewModel extends ChangeNotifier {
         debugPrint('No accountId found in Shared Preferences');
         return;
       }
-
-      debugPrint("Updating profile with:");
-      debugPrint(profile.toJson().toString());
 
       final response = await ProfileApiService.updateAccountDetail(
         accountId: accountId,
