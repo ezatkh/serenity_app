@@ -12,7 +12,7 @@ import 'features/medical_records/medical_records_viewmodel/medical_records_viewm
 import 'features/profile/profile_viewmodel/profile_viewmodel.dart';
 import 'features/splash/splash_ui/splash_ui.dart';
 import 'core/services/local/LocalizationService.dart';
-import 'core/services/local/firebase_api.dart';
+// import 'core/services/local/firebase_api.dart';
 import 'globalErrorListener.dart';
 import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
@@ -54,7 +54,7 @@ Future<void> main() async {
     ));
 
     await Firebase.initializeApp();
-    await FirebaseApi().initNotifications();
+    // await FirebaseApi().initNotifications();
     try {
       await localizeService.initLocalization();
     } catch (e) {
