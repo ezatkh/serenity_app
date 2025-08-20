@@ -73,7 +73,11 @@ class CustomPhoneNumberField extends StatelessWidget {
               countryCodeStyle: const TextStyle(fontSize: 13, color: Colors.grey),
               // add other styles as needed
             ),
+            disableLengthCheck: true,
             onChanged: onChanged,
+            onCountryChanged: (country) {
+              controller.clear();
+            },
             autovalidateMode: AutovalidateMode.disabled,
             controller: controller,
             initialCountryCode: 'PT',

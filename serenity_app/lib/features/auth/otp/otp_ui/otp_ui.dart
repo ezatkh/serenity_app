@@ -27,13 +27,14 @@ class _OtpUIState extends State<OtpUI> {
   void initState() {
     super.initState();
     widget.controller.sendOtp();
+
     widget.controller.timer.addListener(() => setState(() {}));
     widget.controller.error.addListener(() {
       final errorValue = widget.controller.error.value;
       print("widget.controller.error : $errorValue");
 
       setState(() {
-        _isLoading = false; // stop loading on error
+        _isLoading = false;
 
         if (errorValue != null) {
           if (errorValue.contains("blocked all requests from this device")) {
@@ -44,7 +45,12 @@ class _OtpUIState extends State<OtpUI> {
             // Custom message for invalid OTP
             _errorMessage =
             "The activation code you entered is invalid. Please check the code and try again.";
-          } else {
+          }
+          else if (errorValue.contains("missing a valid app identifier") ||
+              errorValue.contains("Invalid PlayIntegrity token")) {
+            _errorMessage = "Verification failed. Please try again to receive your OTP.";
+          }
+          else {
             // Fallback message for other errors
             _errorMessage = errorValue;
           }
@@ -77,7 +83,21 @@ class _OtpUIState extends State<OtpUI> {
       _isLoading = true;
       _errorMessage = null;
     });
-    await widget.controller.verifyOtp(_enteredPin);
+
+    try {
+      await widget.controller.verifyOtp(_enteredPin);
+    } catch (e) {
+      setState(() {
+        _errorMessage = "Verification failed. Please try again.";
+      });
+    } finally {
+      // Always stop loading
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -151,10 +171,10 @@ class _OtpUIState extends State<OtpUI> {
                     ),
                     SizedBox(height: 10 * scale),
                     Text(
-                      appLocalization.getLocalizedString("a6digitCodeWasSentTo"),
+                      "${appLocalization.getLocalizedString("a6digitCodeWasSentTo")} ${widget.controller.normalizedPhone}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: fontSize ,
+                        fontSize: fontSize,
                         fontWeight: FontWeight.w400,
                         color: AppColors.grey,
                       ),

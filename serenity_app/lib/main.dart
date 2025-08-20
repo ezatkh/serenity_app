@@ -8,6 +8,7 @@ import 'core/constants/app_colors.dart';
 import 'features/appointments/appointment_viewmodel/appointments_viewmodel.dart';
 import 'features/cases/cases_viewmodel/cases_viewmodel.dart';
 import 'features/dashboard/dashboard_viewmodel/dashboard_viewmodel.dart';
+import 'features/home/home_viewmodel/home_viewmodel.dart';
 import 'features/medical_records/medical_records_viewmodel/medical_records_viewmodel.dart';
 import 'features/profile/profile_viewmodel/profile_viewmodel.dart';
 import 'features/splash/splash_ui/splash_ui.dart';
@@ -69,6 +70,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => ProfileViewModel()),
           ChangeNotifierProvider(create: (context) => MedicalRecordsViewModel()),
           ChangeNotifierProvider(create: (context) => AppointmentsViewModel()),
+          ChangeNotifierProvider(create: (context) => HomeViewModel()),
         ],
 
         child: const MyApp(isJailbroken: false),

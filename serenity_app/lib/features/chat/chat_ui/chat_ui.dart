@@ -43,7 +43,7 @@ class _ChatUIState extends State<ChatUI> {
       ),
       body: const SafeArea(
         child: Center(
-          child: Text('Welcome to Chat!'),
+          child: Text('Coming soon!'),
         ),
       ),
     );

@@ -4,13 +4,27 @@ import 'package:serenity_app/core/constants/app_colors.dart';
 import 'package:serenity_app/features/home/home_ui/widgets/program_card.dart';
 import '../../../../../../core/services/local/LocalizationService.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../data/Models/appointments_model.dart';
 import '../../../dashboard/dashboard_viewmodel/dashboard_viewmodel.dart';
 import 'coming_appointment_card.dart';
 import 'dashboard_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeBody extends StatelessWidget {
-  const HomeBody({super.key});
+  final String? programType;
+  final String? status;
+  final bool isLoading;
+  final AppointmentModel? nextAppointment;
+  final String? errorMessage;
+
+  const HomeBody({
+    super.key,
+    this.programType,
+    this.status,
+    required this.isLoading,
+    this.nextAppointment,
+    this.errorMessage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +49,16 @@ class HomeBody extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ProgramCard(
                 programName: appLocalization.getLocalizedString("programName") ,
-                programType: appLocalization.getLocalizedString("goldCare") ,
-                statusText: appLocalization.getLocalizedString("active") ,
+                programType:  programType ?? '',
+                statusText: status ?? '' ,
               ),
             ),
             SizedBox(height: 20),
             // Add main content widgets here
             ComingAppointmentCard(
               title: appLocalization.getLocalizedString("comingAppointment"),
-              date: "Aug 30, 2025 at 10:00 AM",
+              date: nextAppointment?.dateStart
+                  ?? appLocalization.getLocalizedString("notAvailable"),
             ),
             SizedBox(height: 20),
             GridView.count(

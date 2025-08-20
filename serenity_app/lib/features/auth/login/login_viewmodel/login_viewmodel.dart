@@ -29,9 +29,9 @@ class LoginViewModel extends ChangeNotifier {
     if (value == null || value.trim().isEmpty) {
       return "NIF is required";
     }
-    if (!RegExp(r'^\d{9}$').hasMatch(value.trim())) {
-      return "NIF must be exactly 9 digits";
-    }
+    // if (!RegExp(r'^\d{9}$').hasMatch(value.trim())) {
+    //   return "NIF must be exactly 9 digits";
+    // }
     return null;
   }
 
@@ -65,19 +65,6 @@ class LoginViewModel extends ChangeNotifier {
 
     if (status != 200) {
       print("data is ${data}");
-
-
-      // await SharedPrefsUtil.saveString('userName', data["name"]?.toString() ?? "NA");
-      // String programType = "NA";
-      // if (data["programType"] != null) {
-      //   if (data["programType"] is List && data["programType"].isNotEmpty) {
-      //     programType = data["programType"][0]?.toString() ?? "NA";
-      //   } else if (data["programType"] is String) {
-      //     programType = data["programType"];
-      //   }
-      // }
-      // await SharedPrefsUtil.saveString('programType', programType);
-      // await SharedPrefsUtil.saveString('status', data["status"]?.toString() ?? "NA");
 
       ToastService.show(
         message: response['error'] ?? 'Something went wrong',

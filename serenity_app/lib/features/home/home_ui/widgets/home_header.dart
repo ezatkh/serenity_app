@@ -11,7 +11,7 @@ class HomeHeader extends StatelessWidget {
   const HomeHeader({
     super.key,
     required this.username,
-    this.notificationCount = 1,
+    this.notificationCount = 0,
   });
 
   // Helper method to format badge count
@@ -77,46 +77,46 @@ class HomeHeader extends StatelessWidget {
               maxLines: 1,
             ),
           ),
-          SizedBox(width: 4 * scale),
-          Stack(
-            children: [
-              IconButton(
-                iconSize: iconSize,
-                onPressed: () {
-                  // Handle notification tap
-                },
-                icon: Icon(
-                  Icons.notifications,
-                  color: Colors.white,
-                  size: iconSize,
-                ),
-              ),
-              if (notificationCount > 0)
-                Positioned(
-                  right: 5.5 * scale,
-                  top: 5.5 * scale,
-                  child: Container(
-                    width: badgeSize,
-                    height: badgeSize,
-                    decoration: const BoxDecoration(
-                      color: AppColors.notification,
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: FittedBox(
-                      child: Text(
-                        getBadgeText(notificationCount),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: adjustedFontSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
+          // SizedBox(width: 4 * scale),
+          // Stack(
+          //   children: [
+          //     IconButton(
+          //       iconSize: iconSize,
+          //       onPressed: () {
+          //         // Handle notification tap
+          //       },
+          //       icon: Icon(
+          //         Icons.notifications,
+          //         color: Colors.white,
+          //         size: iconSize,
+          //       ),
+          //     ),
+          //     if (notificationCount > 0)
+          //       Positioned(
+          //         right: 5.5 * scale,
+          //         top: 5.5 * scale,
+          //         child: Container(
+          //           width: badgeSize,
+          //           height: badgeSize,
+          //           decoration: const BoxDecoration(
+          //             color: AppColors.notification,
+          //             shape: BoxShape.circle,
+          //           ),
+          //           alignment: Alignment.center,
+          //           child: FittedBox(
+          //             child: Text(
+          //               getBadgeText(notificationCount),
+          //               style: TextStyle(
+          //                 color: Colors.white,
+          //                 fontSize: adjustedFontSize,
+          //                 fontWeight: FontWeight.bold,
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //   ],
+          // ),
         ],
       ),
     );

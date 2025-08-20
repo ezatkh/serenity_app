@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
 import 'package:serenity_app/features/dashboard/dashboard_ui/dashboard_ui.dart';
+import '../../../core/constants/constants.dart';
 import '../../../core/navigation/page_transitions.dart';
 import '../../../core/services/cache/sharedPreferences.dart';
 import '../../auth/login/login_ui/login_ui.dart';
@@ -70,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     await _screenController.reverse();
     if (!mounted) return;
 
-    final isLoggedIn = await SharedPrefsUtil.getString('isLoggedIn');
+    final isLoggedIn = await SharedPrefsUtil.getString(IS_LOGGIN);
 
     Navigator.pushReplacement(
       context,

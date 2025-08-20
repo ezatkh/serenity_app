@@ -226,7 +226,7 @@ class _ProfileUIState extends State<ProfileUI> {
                     child: Text(
                       isEditing
                           ? appLocalization.getLocalizedString("save")
-                          : appLocalization.getLocalizedString("update"),
+                          : appLocalization.getLocalizedString("editProfile"),
                       style: TextStyle(color: AppColors.white, fontSize: 15 * scale),
                     ),
                   ),

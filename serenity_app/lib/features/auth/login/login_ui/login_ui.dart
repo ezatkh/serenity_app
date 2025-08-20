@@ -95,6 +95,7 @@ class _LoginUIState extends State<LoginUI> {
                         LoginForm(
                           onLoadingChanged: setLoading,
                         ),
+                        SizedBox(height: 200),
                       ],
                     ),
                   ),

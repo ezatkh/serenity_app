@@ -33,93 +33,95 @@ class MedicalRecordItemWidget extends StatelessWidget {
       color: AppColors.primaryBoldColor,
     );
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          )
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  medicalRecordItem.name!,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16 * scale,
-                    color: AppColors.black,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            )
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    medicalRecordItem.name!,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16 * scale,
+                      color: AppColors.black,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 5),
+                  const SizedBox(height: 5),
 
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // First Column: Medical Folder
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            appLocalization.getLocalizedString('medicalFolder'),
-                            style: labelStyle,
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            medicalRecordItem.pMRName!,
-                            style: valueStyle,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(width: 16),
-                    // Second Column: Upload DateTime
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            appLocalization.getLocalizedString('uploadDateTime'),
-                            style: labelStyle,
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            medicalRecordItem.createdAt!,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13 * scale,
-                              color: Colors.black87,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // First Column: Medical Folder
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              appLocalization.getLocalizedString('medicalFolder'),
+                              style: labelStyle,
                             ),
-                            maxLines: null,
-                          ),
-                        ],
+                            const SizedBox(height: 3),
+                            Text(
+                              medicalRecordItem.pMRName!,
+                              style: valueStyle,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+
+                      const SizedBox(width: 16),
+                      // Second Column: Upload DateTime
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              appLocalization.getLocalizedString('uploadDateTime'),
+                              style: labelStyle,
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              medicalRecordItem.createdAt!,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13 * scale,
+                                color: Colors.black87,
+                              ),
+                              maxLines: null,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          TappableIcon(
-            onTap: onTap,
-          ),
-        ],
+            TappableIcon(
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -53,7 +53,6 @@ class _LoginFormState extends State<LoginForm> {
             controller: nifController,
             keyboardType: TextInputType.number,
             scale:scale,
-            maxLength: 9,
             onChanged: (value) {
               if (nifError != null) {
                 setState(() {
@@ -64,7 +63,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           if (_submitted && nifError != null)
             Padding(
-              padding: const EdgeInsets.only(left: 12, top: 4),
+              padding: const EdgeInsets.only(left: 12, top: 5),
               child: Text(
                 nifError!,
                 style: const TextStyle(color: AppColors.errorColor, fontSize: 12),
@@ -88,7 +87,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           if (_submitted && phoneError != null)
             Padding(
-              padding: const EdgeInsets.only(left: 12),
+              padding: const EdgeInsets.only(top:5,left: 12),
               child: Text(
                 phoneError!,
                 style: const TextStyle(color: AppColors.errorColor, fontSize: 12),
@@ -169,7 +168,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           if (_submitted && showTermsError)
             Padding(
-              padding: const EdgeInsets.only(left: 12, top: 4),
+              padding: const EdgeInsets.only(left: 12, top: 5),
               child: Text(
                 appLocalization.getLocalizedString("pleaseAcceptTerms"),
                 style: const TextStyle(color: AppColors.errorColor, fontSize: 12),
@@ -236,18 +235,18 @@ class _LoginFormState extends State<LoginForm> {
       if (status == 200 && success && data["total"] > 0) {
         final List<dynamic> accountInfo = data['list'];
         final String userId = accountInfo[0]['id'];
-        await SharedPrefsUtil.saveString(USER_ID, userId);
 
         final normalizedPhone = LoginViewModel.normalizeContact(fullPhoneNumber);
         print("the normalized phone number is :${normalizedPhone}");
-        await SharedPrefsUtil.saveString('isLoggedIn', 'true');
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => OtpUI(
               controller: OtpController(
                 emailOrPhone: normalizedPhone,
-                onVerified: () {
+                onVerified: () async {
+                  await SharedPrefsUtil.saveString(USER_ID, userId);
+                  await SharedPrefsUtil.saveString(IS_LOGGIN, 'true');
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (_) => const DashboardUI()),

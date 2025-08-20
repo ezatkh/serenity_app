@@ -17,6 +17,7 @@ class AccountProfile {
   final String? doorNumber;
   final String? apartmentNumber;
   final String? phoneNumber;
+  final List<String>? programType;
 
   AccountProfile({
     this.nif,
@@ -37,9 +38,12 @@ class AccountProfile {
     this.doorNumber,
     this.apartmentNumber,
     this.phoneNumber,
+    this.programType,
   });
 
   factory AccountProfile.fromJson(Map<String, dynamic> json) {
+    final programList = json['programType'] as List<dynamic>?;
+
     return AccountProfile(
       nif: json['nIF'],
       name: json['name'],
@@ -59,6 +63,7 @@ class AccountProfile {
       doorNumber: json['doorNumber'],
       apartmentNumber: json['apartmentNumber'],
       phoneNumber: json['phoneNumber'],
+      programType: programList?.map((e) => e.toString()).toList(),
     );
   }
 
@@ -117,6 +122,7 @@ billingAddressPostalCode: $billingAddressPostalCode
 doorNumber: $doorNumber
 apartmentNumber: $apartmentNumber
 phoneNumber: $phoneNumber
+programType: ${programType?.join(', ') ?? 'N/A'}
 ''';
   }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:serenity_app/core/constants/app_colors.dart';
+
+import '../../../../core/services/local/LocalizationService.dart';
 
 class ProgramCard extends StatelessWidget {
   final String programName;
@@ -17,15 +20,15 @@ class ProgramCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appLocalization = Provider.of<LocalizationService>(context, listen: false);
     final size = MediaQuery.of(context).size;
     final scale = (size.shortestSide / 375).clamp(1.0, 1.4);
     final double cardHeight = 125 * scale;
     final double padding = 16 * scale;
     final double statusFontSize = 11 * scale;
     final double smallTextSize = 13 * scale;
-    final double titleSize = 18 * scale;
+    final double titleSize = 16 * scale;
     final double labelSize = 14 * scale;
-
     return SizedBox(
       width: double.infinity,
       height: cardHeight, // Set a fixed height or calculate dynamically
@@ -71,6 +74,8 @@ class ProgramCard extends StatelessWidget {
                     fontSize: titleSize,
                     fontWeight: FontWeight.bold,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 15 * scale),
                 Row(
@@ -95,7 +100,7 @@ class ProgramCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        statusText,
+                        (statusText !=null && statusText.trim() != "") ?statusText : appLocalization.getLocalizedString("notAvailable"),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: statusFontSize,
