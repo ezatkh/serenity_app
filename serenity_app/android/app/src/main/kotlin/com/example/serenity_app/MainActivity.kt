@@ -1,4 +1,4 @@
-package com.example.serenity_app
+package com.serenityportugal.serenity
 
 import io.flutter.embedding.android.FlutterActivity
 
