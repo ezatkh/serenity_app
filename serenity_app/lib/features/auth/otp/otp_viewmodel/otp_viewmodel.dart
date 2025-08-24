@@ -32,11 +32,9 @@ class OtpController {
   static String  normalizeContact(String input) {
     final trimmed = input.trim();
 
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     final isPortuguesePhone = RegExp(r'^\d{9}$');
     final isInternationalPhone = RegExp(r'^\+\d{7,15}$');
 
-    if (emailRegex.hasMatch(trimmed)) return trimmed;
     if (isPortuguesePhone.hasMatch(trimmed)) return '+351$trimmed';
     if (isInternationalPhone.hasMatch(trimmed)) return trimmed;
 
@@ -65,13 +63,15 @@ class OtpController {
         }
       },
       verificationFailed: (FirebaseAuthException e) {
-        _setError(e.message);
+        _setError("Verification failed: ${e.code}");
       },
       codeSent: (String verificationId, int? resendToken) {
+        print("Verification ID received: $_verificationId");
         _verificationId = verificationId;
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        _verificationId = verificationId;
+        print("Auto-retrieval timeout. The user must now enter the code manually.");
+        // _verificationId = verificationId;
       },
     );
   }
@@ -84,6 +84,11 @@ class OtpController {
 
   Future<void> verifyOtp(String code) async {
     error.value = null;
+
+    debugPrint("--- ATTEMPTING TO VERIFY OTP ---");
+    debugPrint("Using Verification ID: $_verificationId");
+    debugPrint("Using Code: $code");
+
     if (_verificationId == null) {
       _setError('No verification ID available. Please request OTP again.');
       return;
@@ -96,7 +101,13 @@ class OtpController {
       await _auth.signInWithCredential(credential);
       onVerified();
     } on FirebaseAuthException catch (e) {
-      _setError(e.message);
+      if (e.code == 'invalid-verification-code') {
+        _setError('The code you entered is incorrect. Please try again.');
+      } else if (e.code == 'session-expired') {
+        _setError('The verification code has expired. Please send a new one.');
+      } else {
+        _setError('An error occurred: ${e.message}');
+      }
     }
   }
 
@@ -114,7 +125,7 @@ class OtpController {
 
   void _setError(String? message) {
     error.value = message;
-    debugPrint('OTP Error: $message');
+    print('OTP Error: $message');
   }
 
   void dispose() {

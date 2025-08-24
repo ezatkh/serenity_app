@@ -16,6 +16,8 @@ import 'core/services/local/LocalizationService.dart';
 // import 'core/services/local/firebase_api.dart';
 import 'globalErrorListener.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -53,9 +55,13 @@ Future<void> main() async {
       systemNavigationBarColor: Colors.white,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
-
     await Firebase.initializeApp();
-    // await FirebaseApi().initNotifications();
+    // if (Firebase.apps.isEmpty) {
+    //   await Firebase.initializeApp(
+    //     options: DefaultFirebaseOptions.currentPlatform,
+    //   );
+    // }
+      // await FirebaseApi().initNotifications();
     try {
       await localizeService.initLocalization();
     } catch (e) {

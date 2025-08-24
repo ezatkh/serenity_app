@@ -65,7 +65,7 @@ class _OtpUIState extends State<OtpUI> {
   @override
   void dispose() {
     _pinController.dispose();
-    widget.controller.dispose();
+    // widget.controller.dispose();
     super.dispose();
   }
 
@@ -85,10 +85,13 @@ class _OtpUIState extends State<OtpUI> {
     });
 
     try {
+      print("entered pin is $_enteredPin");
       await widget.controller.verifyOtp(_enteredPin);
     } catch (e) {
       setState(() {
-        _errorMessage = "Verification failed. Please try again.";
+              print("Verification failed. Please try again :$e");
+
+        _errorMessage = "Verification failed. Please try again :$e";
       });
     } finally {
       // Always stop loading
@@ -142,6 +145,16 @@ class _OtpUIState extends State<OtpUI> {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: AppColors.backgroundColor,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: AppColors.black),
+            onPressed: () {
+              Navigator.pop(context); // Navigate back to the previous screen
+            },
+          ),
+        ),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
